@@ -1,0 +1,198 @@
+/* Dashboard Container */
+.dashboard-container {
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    min-height: 100vh;
+  }
+  
+  /* Header Styles */
+  .dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #e0e0e0;
+  }
+  
+  .dashboard-header h1 {
+    color: #2c3e50;
+    margin: 0;
+    font-size: 2rem;
+  }
+  
+  /* Logout Button */
+  .logout-btn {
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    padding: 0.6rem 1.2rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.3s ease;
+  }
+  
+  .logout-btn:hover {
+    background-color: #c0392b;
+    transform: translateY(-2px);
+  }
+  
+  /* User Info Section */
+  .user-info {
+    background-color: #f8f9fa;
+    padding: 1.5rem;
+    border-radius: 10px;
+    margin-bottom: 2rem;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  }
+  
+  .user-info h2 {
+    margin-top: 0;
+    color: #3498db;
+    font-size: 1.5rem;
+  }
+  
+  .user-info p {
+    margin: 0.5rem 0;
+    font-size: 1rem;
+    color: #34495e;
+  }
+  
+  .user-info strong {
+    color: #2c3e50;
+  }
+  
+  /* Dashboard Cards */
+  .dashboard-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+  }
+  
+  .dashboard-card {
+    background-color: white;
+    border-radius: 10px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    cursor: pointer;
+    border: 1px solid #e0e0e0;
+  }
+  
+  .dashboard-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  }
+  
+  .dashboard-card h3 {
+    color: #2c3e50;
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+    font-size: 1.2rem;
+  }
+  
+  .dashboard-card p {
+    color: #7f8c8d;
+    margin: 0;
+    font-size: 0.95rem;
+  }
+  
+  /* Logout Modal Styles */
+  .logout-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    backdrop-filter: blur(3px);
+  }
+  
+  .logout-modal {
+    background-color: white;
+    padding: 2rem;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 400px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  }
+  
+  .logout-modal h3 {
+    margin-top: 0;
+    color: #2c3e50;
+    font-size: 1.4rem;
+    margin-bottom: 1rem;
+  }
+  
+  .logout-modal p {
+    margin-bottom: 2rem;
+    color: #7f8c8d;
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+  
+  .logout-modal-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+  }
+  
+  .confirm-btn, .cancel-btn {
+    padding: 0.7rem 1.4rem;
+    border-radius: 6px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: none;
+  }
+  
+  .confirm-btn {
+    background-color: #e74c3c;
+    color: white;
+  }
+  
+  .confirm-btn:hover {
+    background-color: #c0392b;
+  }
+  
+  .cancel-btn {
+    background-color: #ecf0f1;
+    color: #2c3e50;
+  }
+  
+  .cancel-btn:hover {
+    background-color: #bdc3c7;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .dashboard-header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+  
+    .dashboard-cards {
+      grid-template-columns: 1fr;
+    }
+  
+    .logout-modal {
+      padding: 1.5rem;
+    }
+  
+    .logout-modal-buttons {
+      flex-direction: column;
+      gap: 0.8rem;
+    }
+  
+    .confirm-btn, .cancel-btn {
+      width: 100%;
+    }
+  }

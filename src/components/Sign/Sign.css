@@ -1,0 +1,121 @@
+.sign-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+  
+  .sign-form {
+    background: rgba(255, 255, 255, 0.95);
+    margin-top: 1rem;
+    padding: 2rem;
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    width: 100%;
+    max-width: 420px;
+    backdrop-filter: blur(10px);
+    overflow: hidden;
+  }
+  
+  .form-header {
+    display: flex;
+    margin-bottom: 2rem;
+    position: relative;
+  }
+  
+  .form-header::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, rgba(0, 0, 0, 0.1), transparent);
+  }
+  
+  .toggle-btn {
+    flex: 1;
+    padding: 1rem;
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #666;
+    transition: all 0.3s ease;
+    position: relative;
+    z-index: 1;
+  }
+  
+  .toggle-btn.active {
+    color: #3182ce;
+  }
+  
+  .toggle-btn.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60%;
+    height: 3px;
+    background: #3182ce;
+    border-radius: 3px;
+  }
+  
+  .form-group {
+    margin-bottom: 1rem;
+    position: relative;
+  }
+  
+  .form-group label {
+    display: block;
+    font-weight: 500;
+    color: #444;
+  }
+  
+  .form-group input {
+    width: 90%;
+    padding: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: all 0.3s;
+    background: rgba(255, 255, 255, 0.8);
+  }
+  
+  .form-group input:focus {
+    outline: none;
+    border-color: #3182ce;
+    box-shadow: 0 0 0 3px rgba(49, 130, 206, 0.2);
+  }
+  
+  .error-message {
+    color: #e53e3e;
+    margin-bottom: 1.5rem;
+    text-align: center;
+    padding: 0.75rem;
+    background: rgba(229, 62, 62, 0.1);
+    border-radius: 8px;
+    border-left: 4px solid #e53e3e;
+  }
+  
+  .submit-btn {
+    width: 100%;
+    padding: 1rem;
+    background: linear-gradient(90deg, #3182ce 0%, #63b3ed 100%);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    margin-top: 1rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .submit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  }
