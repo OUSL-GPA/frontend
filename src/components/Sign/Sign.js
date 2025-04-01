@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './Sign.css';
+import OUSLCard from '../OUSLCard';
 
 const Sign = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -87,6 +88,7 @@ const Sign = () => {
   return (
     <div className="sign-container">
       <ToastContainer />
+      <OUSLCard />
       <motion.div 
         className="sign-form"
         initial={{ opacity: 0, y: 20 }}
@@ -161,7 +163,7 @@ const Sign = () => {
                   <input
                     type="text"
                     name="studentId"
-                    value={formData.studentId}
+                    value={`S${formData.studentId.replace(/[^0-9]/g, '')}`}
                     onChange={handleChange}
                     required
                   />
@@ -204,11 +206,9 @@ const Sign = () => {
               <motion.button
                 type="submit"
                 className="submit-btn"
-                whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: isLogin ? 0.3 : 0.5 }}
+                transition={{ delay: isLogin ? 0.2 : 0.3 }}
               >
                 {isLogin ? 'Sign In' : 'Sign Up'}
               </motion.button>
