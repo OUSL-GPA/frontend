@@ -12,12 +12,18 @@ const Profile = () => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
-    studentId: ''
+    studentId: '',
+    img: null
   });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [profilePicture, setProfilePicture] = useState('');
+  const [imageLoading, setImageLoading] = useState(false);
 
-  // Fetch user data on component mount
+  // Cloudinary configuration
+  const CLOUD_NAME = 'djsqx9cyy'; // REPLACE THIS
+  const UPLOAD_PRESET = 'OUSLGPA'; // REPLACE THIS
+
   useEffect(() => {
     const fetchUserData = async () => {
       try {
@@ -35,6 +41,7 @@ const Profile = () => {
 
         if (response.data.success) {
           setUserData(response.data.data);
+          setProfilePicture(response.data.data.profilePicture || '/default-profile.png');
           setFormData({
             name: response.data.data.name,
             email: response.data.data.email,
@@ -61,25 +68,68 @@ const Profile = () => {
   }, [navigate]);
 
   const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value
-    });
+    const { name, value, files } = e.target;
+    if (name === 'profilePicture') {
+      setFormData({...formData, img: files[0]});
+      if (files[0]) {
+        setProfilePicture(URL.createObjectURL(files[0]));
+      }
+    } else {
+      setFormData({
+        ...formData,
+        [name]: value
+      });
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const token = localStorage.getItem('studentToken');
-      const response = await axios.put('/api/auth/update', formData, {
+      
+      // First upload the image if it exists
+      let imageUrl = userData?.profilePicture;
+      if (formData.img) {
+        setImageLoading(true);
+        
+        const imageFormData = new FormData();
+        imageFormData.append('file', formData.img);
+        imageFormData.append('upload_preset', UPLOAD_PRESET);
+        
+        try {
+          const uploadRes = await axios.post(
+            `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`,
+            imageFormData
+          );
+          imageUrl = uploadRes.data.secure_url;
+        } catch (uploadError) {
+          console.error('Image upload error:', uploadError);
+          toast.error('Failed to upload profile picture. Please try again.');
+          setImageLoading(false);
+          return;
+        } finally {
+          setImageLoading(false);
+        }
+      }
+
+      // Then update the user data
+      const updatedData = {
+        name: formData.name,
+        email: formData.email,
+        studentId: formData.studentId,
+        profilePicture: imageUrl
+      };
+
+      const response = await axios.put('/api/auth/update', updatedData, {
         headers: {
-          Authorization: `Bearer ${token}`
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json'
         }
       });
 
       if (response.data.success) {
         setUserData(response.data.data);
+        setProfilePicture(response.data.data.profilePicture || '/default-profile.png');
         toast.success('Profile updated successfully!');
         setEditMode(false);
       } else {
@@ -93,7 +143,7 @@ const Profile = () => {
   };
 
   const handleBack = () => {
-    navigate(-1); // Go back to previous page
+    navigate(-1);
   };
 
   if (loading) {
@@ -120,7 +170,7 @@ const Profile = () => {
         <button className="back-button" onClick={handleBack}>
           <FaArrowLeft className="back-icon" /> Back
         </button>
-        <h1>{formData.name }'s Profile</h1>
+        <h1>{formData.name}'s Profile</h1>
         {!editMode && (
           <button 
             className="edit-btn"
@@ -132,6 +182,30 @@ const Profile = () => {
       </div>
 
       <div className="profile-content">
+        <div className="profile-picture-section">
+          <img 
+            src={profilePicture} 
+            alt="Profile" 
+            className="profile-picture" 
+          />
+          {editMode && (
+            <>
+              <label htmlFor="profilePictureUpload" className="upload-btn">
+                {imageLoading ? 'Uploading...' : 'Change Profile Picture'}
+              </label>
+              <input 
+                type="file" 
+                id="profilePictureUpload" 
+                name="profilePicture"
+                accept="image/*" 
+                onChange={handleInputChange} 
+                style={{ display: 'none' }} 
+                disabled={imageLoading}
+              />
+            </>
+          )}
+        </div>
+
         {editMode ? (
           <form onSubmit={handleSubmit} className="profile-form">
             <div className="form-group">
@@ -143,6 +217,7 @@ const Profile = () => {
                 value={formData.name}
                 onChange={handleInputChange}
                 required
+                disabled={imageLoading}
               />
             </div>
 
@@ -155,6 +230,7 @@ const Profile = () => {
                 value={formData.email}
                 onChange={handleInputChange}
                 required
+                disabled={imageLoading}
               />
             </div>
 
@@ -171,8 +247,12 @@ const Profile = () => {
             </div>
 
             <div className="form-actions">
-              <button type="submit" className="save-btn">
-                Save Changes
+              <button 
+                type="submit" 
+                className="save-btn"
+                disabled={imageLoading}
+              >
+                {imageLoading ? 'Saving...' : 'Save Changes'}
               </button>
               <button 
                 type="button" 
@@ -184,7 +264,9 @@ const Profile = () => {
                     email: userData.email,
                     studentId: userData.studentId
                   });
+                  setProfilePicture(userData.profilePicture || '/default-profile.png');
                 }}
+                disabled={imageLoading}
               >
                 Cancel
               </button>

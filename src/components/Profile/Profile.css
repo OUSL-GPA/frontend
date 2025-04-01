@@ -204,6 +204,14 @@
     padding-bottom: 1rem;
     padding-top: 1rem; /* Add some top padding */
   }
+
+  .profile-picture{
+    width: auto;
+    height: 150px;
+    border-radius: 50%;
+    margin-right: 20px;
+    border: 2px solid #3498db; /* Add a border to the profile picture */
+  }
   
   /* Adjust the edit button positioning */
   .edit-btn {
