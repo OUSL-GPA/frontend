@@ -207,21 +207,21 @@
   border: none;
 }
 
-.confirm-btn {
+.logout-modal-buttons .confirm-btn {
   background-color: #e74c3c;
   color: white;
 }
 
-.confirm-btn:hover {
+.logout-modal-buttons .confirm-btn:hover {
   background-color: #c0392b;
 }
 
-.cancel-btn {
+.logout-modal-buttons .cancel-btn {
   background-color: #ecf0f1;
   color: #2c3e50;
 }
 
-.cancel-btn:hover {
+.logout-modal-buttons .cancel-btn:hover {
   background-color: #bdc3c7;
 }
 

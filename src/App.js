@@ -5,6 +5,7 @@ import { Routes, Route } from "react-router-dom";
 import Dashboard from "./components/Dashboard/Dashboard";
 import Sign from "./components/Sign/Sign";
 import ProtectedRoute from "./components/ProtectedRoute";
+import Profile from "./components/Profile/Profile";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         <Route path="/sign" element={<Sign />} />
         <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>}/>
         <Route path="/" element={<Sign />} />
+        <Route path="/profile" element={<Profile />} />
       </Routes>
     </div>
   );

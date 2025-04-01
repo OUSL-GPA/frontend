@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import "./Dashboard.css";
 import OUSLCard from "../OUSLCard";
-import defaultProfile from "../../assets/default-Profile.png"; // Make sure to add this image
+import defaultProfile from "../../assets/default-Profile.png";
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -18,13 +18,9 @@ const Dashboard = () => {
     navigate("/sign");
   };
 
-  const openLogoutConfirm = () => {
-    setShowLogoutConfirm(true);
-  };
-
-  const closeLogoutConfirm = () => {
-    setShowLogoutConfirm(false);
-  };
+  const openLogoutConfirm = () => setShowLogoutConfirm(true);
+  const closeLogoutConfirm = () => setShowLogoutConfirm(false);
+  const navigateToProfile = () => navigate("/profile");
 
   return (
     <motion.div
@@ -80,13 +76,18 @@ const Dashboard = () => {
         <OUSLCard />
         <div className="header-right">
           <div className="profile-section">
-            <div className="profile-image-container">
+            <motion.div
+              className="profile-image-container"
+              onClick={navigateToProfile}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
               <img
                 src={defaultProfile}
                 alt="Profile"
                 className="profile-image"
               />
-            </div>
+            </motion.div>
             <div className="profile-info">
               {user && (
                 <>
@@ -110,16 +111,17 @@ const Dashboard = () => {
       <div className="dashboard-content">
         {user && (
           <div className="user-info">
-            <h2>User Information</h2>
-            <p>
-              <strong>Name:</strong> {user.name}
-            </p>
-            <p>
-              <strong>Email:</strong> {user.email}
-            </p>
-            <p>
-              <strong>Student ID:</strong> {user.studentId}
-            </p>
+            <h2>Welcome back, {user.name.split(' ')[0]}!</h2>
+            <div className="info-grid">
+              <div className="info-item">
+                <span className="info-label">Email:</span>
+                <span className="info-value">{user.email}</span>
+              </div>
+              <div className="info-item">
+                <span className="info-label">Student ID:</span>
+                <span className="info-value">{user.studentId}</span>
+              </div>
+            </div>
           </div>
         )}
 
@@ -128,7 +130,9 @@ const Dashboard = () => {
             className="dashboard-card"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
+            onClick={() => navigate("/courses")}
           >
+            <div className="card-icon">📚</div>
             <h3>Courses</h3>
             <p>View your enrolled courses</p>
           </motion.div>
@@ -137,7 +141,9 @@ const Dashboard = () => {
             className="dashboard-card"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
+            onClick={() => navigate("/grades")}
           >
+            <div className="card-icon">📊</div>
             <h3>Grades</h3>
             <p>Check your academic progress</p>
           </motion.div>
@@ -146,9 +152,22 @@ const Dashboard = () => {
             className="dashboard-card"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
+            onClick={() => navigate("/schedule")}
           >
+            <div className="card-icon">🗓️</div>
             <h3>Schedule</h3>
             <p>View your class timetable</p>
+          </motion.div>
+
+          <motion.div
+            className="dashboard-card"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={() => navigate("/gpa-calculator")}
+          >
+            <div className="card-icon">🧮</div>
+            <h3>GPA Calculator</h3>
+            <p>Calculate your semester GPA</p>
           </motion.div>
         </div>
       </div>
