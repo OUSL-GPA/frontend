@@ -1,15 +1,20 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import "./Dashboard.css";
 import OUSLCard from "../OUSLCard";
 import defaultProfile from "../../assets/default-Profile.png";
+import { AuthContext } from "../../context/AuthContext"; // Adjust the path as needed
 
 const Dashboard = () => {
   const navigate = useNavigate();
-  const user = JSON.parse(localStorage.getItem("userData"));
+  // const user = JSON.parse(localStorage.getItem("userData"));
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
+  const {user} = useContext(AuthContext);
+
+  const userId = user.id;
+  
 
   const handleLogout = () => {
     localStorage.removeItem("studentToken");
@@ -163,7 +168,7 @@ const Dashboard = () => {
             className="dashboard-card"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            onClick={() => navigate("/gpa-calculator")}
+            onClick={() => navigate(`/gpa/${userId}`)}
           >
             <div className="card-icon">🧮</div>
             <h3>GPA Calculator</h3>

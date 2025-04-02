@@ -22,7 +22,7 @@ const Profile = () => {
 
   // Cloudinary configuration
   const CLOUD_NAME = 'djsqx9cyy'; // REPLACE THIS
-  const UPLOAD_PRESET = 'OUSLGPA'; // REPLACE THIS
+  const UPLOAD_PRESET = 'upload'; // REPLACE THIS
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -100,8 +100,13 @@ const Profile = () => {
           const uploadRes = await axios.post(
             `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`,
             imageFormData
+
+            
           );
-          imageUrl = uploadRes.data.secure_url;
+          console.log(uploadRes.data.url);
+
+          imageUrl = uploadRes.data.url;
+
         } catch (uploadError) {
           console.error('Image upload error:', uploadError);
           toast.error('Failed to upload profile picture. Please try again.');

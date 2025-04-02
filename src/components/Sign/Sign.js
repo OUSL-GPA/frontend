@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -6,6 +6,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './Sign.css';
 import OUSLCard from '../OUSLCard';
+import { AuthContext } from '../../context/AuthContext'; // Adjust the path as needed
 
 const Sign = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -18,6 +19,7 @@ const Sign = () => {
   const [error, setError] = useState('');
   const [isAnimating, setIsAnimating] = useState(false);
   const navigate = useNavigate();
+  const { dispatch } = useContext(AuthContext);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -28,6 +30,8 @@ const Sign = () => {
     setError('');
 
     try {
+      dispatch({ type: "LOGIN_START" });
+
       const endpoint = isLogin ? '/api/auth/login' : '/api/auth/register';
       const payload = isLogin 
         ? { email: formData.email, password: formData.password }
@@ -35,9 +39,10 @@ const Sign = () => {
 
       const response = await axios.post(endpoint, payload);
       
-      localStorage.setItem('studentToken', response.data.token);
-      
       if (isLogin) {
+        dispatch({ type: "LOGIN_SUCCESS", payload: response.data.user });
+        localStorage.setItem('studentToken', response.data.token);
+        
         toast.success('Login successful! Redirecting...', {
           position: "top-right",
           autoClose: 2000,
@@ -47,6 +52,10 @@ const Sign = () => {
           draggable: true,
           progress: undefined,
         });
+
+        setTimeout(() => {
+          navigate('/dashboard');
+        }, 1000);
       } else {
         toast.success('Registration successful! Please login.', {
           position: "top-right",
@@ -57,13 +66,21 @@ const Sign = () => {
           draggable: true,
           progress: undefined,
         });
-      }
 
-      setTimeout(() => {
-        navigate(isLogin ? '/dashboard' : '/'); // Redirect to home after login or back to sign in after registration
-      }, isLogin ? 1000 : 1000);
+        // After registration, switch to login form
+        setTimeout(() => {
+          setIsLogin(true);
+          setFormData({
+            name: '',
+            email: '',
+            password: '',
+            studentId: ''
+          });
+        }, 1000);
+      }
       
     } catch (err) {
+      dispatch({ type: "LOGIN_FAILURE", payload: err.response?.data?.message || 'Something went wrong' });
       setError(err.response?.data?.message || 'Something went wrong');
       toast.error(err.response?.data?.message || 'Something went wrong', {
         position: "top-right",
@@ -81,7 +98,7 @@ const Sign = () => {
     if (!isAnimating) {
       setIsAnimating(true);
       setIsLogin(!isLogin);
-      setTimeout(() => setIsAnimating(false), 500); // Match animation duration
+      setTimeout(() => setIsAnimating(false), 500);
     }
   };
 

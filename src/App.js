@@ -6,6 +6,7 @@ import Dashboard from "./components/Dashboard/Dashboard";
 import Sign from "./components/Sign/Sign";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Profile from "./components/Profile/Profile";
+import GPAPage from './components/GPAPage/GPAPage';
 
 function App() {
   return (
@@ -16,6 +17,14 @@ function App() {
         <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>}/>
         <Route path="/" element={<Sign />} />
         <Route path="/profile" element={<Profile />} />
+        <Route 
+          path="/gpa/:userId" 
+          element={
+            <ProtectedRoute>
+              <GPAPage />
+            </ProtectedRoute>
+          } 
+        />
       </Routes>
     </div>
   );
