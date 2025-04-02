@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./GPAPage.css";
 import { AuthContext } from "../../context/AuthContext";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const GPAPage = () => {
   const [courses, setCourses] = useState([]);
@@ -86,38 +88,53 @@ const GPAPage = () => {
         grade: "A",
         courseType: activeType,
       });
+      toast.success("Successfully course added", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
     } catch (error) {
       console.error("Error adding course:", error);
-      alert(error.response?.data?.error || "Failed to add course");
+      toast.error(error.response?.data?.error || "Failed to add course", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
     }
   };
 
   // Update calculate GPA function
-  const handleCalculateGPA = async () => {
-    try {
-      const response = await axios.post(
-        `/api/courses/${userId}/calculate`,
-        {},
-        {
-          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-        }
-      );
+  // const handleCalculateGPA = async () => {
+  //   try {
+  //     const response = await axios.post(
+  //       `/api/courses/${userId}/calculate`,
+  //       {},
+  //       {
+  //         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+  //       }
+  //     );
 
-      setGpa(response.data.gpa);
-      setLastCalculated(response.data.lastCalculated);
-      // Refresh courses to update calculated status
-      const coursesRes = await axios.get(`/api/courses/${userId}`, {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-      });
-      setCourses(coursesRes.data);
-    } catch (error) {
-      console.error(
-        "Error calculating GPA:",
-        error.response?.data || error.message
-      );
-      alert(error.response?.data?.error || "Failed to calculate GPA");
-    }
-  };
+  //     setGpa(response.data.gpa);
+  //     setLastCalculated(response.data.lastCalculated);
+  //     // Refresh courses to update calculated status
+  //     const coursesRes = await axios.get(`/api/courses/${userId}`, {
+  //       headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+  //     });
+  //     setCourses(coursesRes.data);
+  //   } catch (error) {
+  //     console.error(
+  //       "Error calculating GPA:",
+  //       error.response?.data || error.message
+  //     );
+  //     alert(error.response?.data?.error || "Failed to calculate GPA");
+  //   }
+  // };
 
   // Filter courses by level and type
   const filteredCourses = courses.filter(
@@ -126,14 +143,7 @@ const GPAPage = () => {
 
   return (
     <div className="gpa-container">
-      <h1>GPA Calculator</h1>
-
-      <div className="gpa-display">
-        <h2>Current GPA: {gpa}</h2>
-        {lastCalculated && (
-          <p>Last calculated: {new Date(lastCalculated).toLocaleString()}</p>
-        )}
-      </div>
+      <h1>Add Course & Grades</h1>
 
       <div className="level-tabs">
         {[4, 5, 6].map((level) => (
@@ -253,11 +263,11 @@ const GPAPage = () => {
         )}
       </div>
 
-      <div className="calculate-section">
+      {/* <div className="calculate-section">
         <button onClick={handleCalculateGPA} className="calculate-btn">
           Calculate GPA
         </button>
-      </div>
+      </div> */}
     </div>
   );
 };
