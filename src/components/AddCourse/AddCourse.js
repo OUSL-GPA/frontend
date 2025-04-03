@@ -1,19 +1,14 @@
-import React, { useState, useEffect, useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useContext } from "react";
 import axios from "axios";
-import "./GPAPage.css";
+import "./AddCourse.css";
 import { AuthContext } from "../../context/AuthContext";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const GPAPage = () => {
+const AddCourse = () => {
   const [courses, setCourses] = useState([]);
-  const [gpa, setGpa] = useState(0);
-  const [lastCalculated, setLastCalculated] = useState(null);
-  const [calculatedCourses, setCalculatedCourses] = useState([]);
   const [activeLevel, setActiveLevel] = useState(4);
   const [activeType, setActiveType] = useState("compulsory");
-  const navigate = useNavigate();
   const { user } = useContext(AuthContext);
 
   const userId = user.id;
@@ -25,37 +20,6 @@ const GPAPage = () => {
     grade: "A",
     courseType: "compulsory",
   });
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const [coursesRes, gpaRes] = await Promise.all([
-          axios.get(`/api/courses/${userId}`, {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          }),
-          axios.get(`/api/courses/${userId}/current`, {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          }),
-        ]);
-
-        setCourses(coursesRes.data);
-        setGpa(gpaRes.data.gpa || 0);
-        setCalculatedCourses(gpaRes.data.calculatedCourses || []);
-        setLastCalculated(gpaRes.data.lastCalculated || null);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-        if (error.response?.status === 401) {
-          navigate("/dashboard");
-        }
-      }
-    };
-
-    fetchData();
-  }, [userId, navigate]); // Add userId and navigate to the dependency array
 
   // Handle input changes for new course
   const handleInputChange = (e) => {
@@ -90,12 +54,14 @@ const GPAPage = () => {
       });
       toast.success("Successfully course added", {
         position: "top-right",
-        autoClose: 3000,
+        autoClose: 2500,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
       });
+      setActiveLevel(4); // Reset to default level
+      setActiveType("compulsory"); // Reset to default type
     } catch (error) {
       console.error("Error adding course:", error);
       toast.error(error.response?.data?.error || "Failed to add course", {
@@ -106,43 +72,19 @@ const GPAPage = () => {
         pauseOnHover: true,
         draggable: true,
       });
+      setActiveLevel(4); // Reset to default level
+      setActiveType("compulsory"); // Reset to default type
     }
   };
 
-  // Update calculate GPA function
-  // const handleCalculateGPA = async () => {
-  //   try {
-  //     const response = await axios.post(
-  //       `/api/courses/${userId}/calculate`,
-  //       {},
-  //       {
-  //         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-  //       }
-  //     );
-
-  //     setGpa(response.data.gpa);
-  //     setLastCalculated(response.data.lastCalculated);
-  //     // Refresh courses to update calculated status
-  //     const coursesRes = await axios.get(`/api/courses/${userId}`, {
-  //       headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-  //     });
-  //     setCourses(coursesRes.data);
-  //   } catch (error) {
-  //     console.error(
-  //       "Error calculating GPA:",
-  //       error.response?.data || error.message
-  //     );
-  //     alert(error.response?.data?.error || "Failed to calculate GPA");
-  //   }
-  // };
-
+ 
   // Filter courses by level and type
   const filteredCourses = courses.filter(
     (course) => course.level === activeLevel && course.courseType === activeType
   );
 
   return (
-    <div className="gpa-container">
+    <div className="course-container">
       <h1>Add Course & Grades</h1>
 
       <div className="level-tabs">
@@ -172,6 +114,7 @@ const GPAPage = () => {
       <div className="course-form">
         <h3>
           Add New Course (Level {activeLevel} - {activeType})
+          <span> imporant!</span>
         </h3>
         <form onSubmit={handleAddCourse}>
           <div className="form-group">
@@ -241,7 +184,6 @@ const GPAPage = () => {
                 <th>Course Name</th>
                 <th>Credits</th>
                 <th>Grade</th>
-                <th>Included in GPA</th>
               </tr>
             </thead>
             <tbody>
@@ -251,25 +193,14 @@ const GPAPage = () => {
                   <td>{course.courseName}</td>
                   <td>{course.credits}</td>
                   <td>{course.grade}</td>
-                  <td>
-                    {calculatedCourses.some((c) => c._id === course._id)
-                      ? "Yes"
-                      : "No"}
-                  </td>
                 </tr>
               ))}
             </tbody>
           </table>
         )}
       </div>
-
-      {/* <div className="calculate-section">
-        <button onClick={handleCalculateGPA} className="calculate-btn">
-          Calculate GPA
-        </button>
-      </div> */}
     </div>
   );
 };
 
-export default GPAPage;
+export default AddCourse;

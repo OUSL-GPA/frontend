@@ -246,7 +246,6 @@ const Profile = () => {
                 id="studentId"
                 name="studentId"
                 value={formData.studentId}
-                disabled
                 required
               />
             </div>

@@ -1,9 +1,9 @@
 /* Dashboard Container */
 .dashboard-container {
-  padding: 2rem;
+  padding: 0.001rem;
   max-width: 1200px;
   margin: 0 auto;
-  min-height: 100vh;
+  max-height: 100vh;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
@@ -12,7 +12,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
   padding-bottom: 1rem;
   border-bottom: 1px solid #e0e0e0;
   flex-wrap: wrap;
@@ -95,8 +95,11 @@
 
 /* User Info Section */
 .user-info {
-  background-color: #f8f9fa;
-  padding: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #eeecec;
+  padding: 1rem;
   border-radius: 10px;
   margin-bottom: 2rem;
   box-shadow: 0 2px 5px rgba(0,0,0,0.05);
@@ -104,7 +107,7 @@
 
 .user-info h2 {
   margin-top: 0;
-  color: #3498db;
+  color: #2478b0;
   font-size: 1.5rem;
 }
 
@@ -254,4 +257,112 @@
   .confirm-btn, .cancel-btn {
     width: 100%;
   }
+}
+
+
+
+
+/* GPA Display Styles */
+.gpa-display-container {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  margin: 20px 0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.gpa-header {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.gpa-header h3 {
+  margin: 0;
+  font-size: 1.2rem;
+  color: #333;
+}
+
+.refresh-gpa-btn {
+  background: #3498db;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.refresh-gpa-btn:hover {
+  background: linear-gradient(135deg, #ff416c, #ff4b2b);
+  transform: scale(1.05);
+  transition: all 0.5s ease;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.refresh-gpa-btn:disabled {
+  background: #95a5a6;
+  cursor: not-allowed;
+}
+
+.gpa-value {
+  font-size: 3rem;
+  font-weight: bold;
+  text-align: center;
+  margin: 15px 0;
+}
+
+.gpa-number {
+  font-size: 4rem;
+}
+
+.gpa-scale {
+  font-size: 1.5rem;
+  color: #7f8c8d;
+}
+
+.gpa-message {
+  text-align: center;
+  font-style: italic;
+  color: #555;
+  margin-top: 10px;
+}
+
+.gpa-loading, .gpa-error {
+  text-align: center;
+  padding: 10px;
+}
+
+/* Card Styles */
+.primary-card {
+  background: linear-gradient(135deg, #3498db, #2c3e50);
+  color: white;
+}
+
+.primary-card .card-icon {
+  color: white;
+}
+
+.primary-card p {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.disabled-card{
+  opacity: 0.4;
+}
+
+/* Loading and Error States */
+.loading-screen, .error-screen {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  font-size: 1.5rem;
+}
+
+.error-screen {
+  color: #e74c3c;
 }
