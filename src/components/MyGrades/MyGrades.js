@@ -77,7 +77,7 @@ const MyGrades = () => {
         <p>No courses found. Add some courses to see them here.</p>
       ) : (
         <div className="courses-by-level">
-          {[4, 5, 6].map((level) => {
+          {[3, 4, 5, 6].map((level) => {
             const levelCourses = safeCourses.filter(course => course.level === level);
             
             return levelCourses.length > 0 && (

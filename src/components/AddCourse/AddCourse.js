@@ -9,7 +9,7 @@ import { IoReturnUpBack } from "react-icons/io5";
 
 const AddCourse = () => {
   const [courses, setCourses] = useState([]);
-  const [activeLevel, setActiveLevel] = useState(4);
+  const [activeLevel, setActiveLevel] = useState(3);
   const [activeType, setActiveType] = useState("compulsory");
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
@@ -21,7 +21,7 @@ const AddCourse = () => {
     courseCode: "",
     courseName: "",
     grade: "A",
-    courseType: "compulsory",
+    courseType: activeType,
   });
 
   // Handle input changes for new course
@@ -30,6 +30,8 @@ const AddCourse = () => {
     setNewCourse((prev) => ({
       ...prev,
       [name]: value,
+      courseType: activeType, // Ensure courseType is always set to the active type
+      level: activeLevel, // Ensure level is always set to the active level
     }));
   };
 
@@ -41,6 +43,7 @@ const AddCourse = () => {
         `/api/courses/${userId}`,
         {
           ...newCourse,
+          courseType: activeType,
           level: activeLevel,
         },
         {
@@ -63,7 +66,7 @@ const AddCourse = () => {
         pauseOnHover: true,
         draggable: true,
       });
-      setActiveLevel(4); // Reset to default level
+      setActiveLevel(3); // Reset to default level
       setActiveType("compulsory"); // Reset to default type
     } catch (error) {
       console.error("Error adding course:", error);
@@ -75,7 +78,7 @@ const AddCourse = () => {
         pauseOnHover: true,
         draggable: true,
       });
-      setActiveLevel(4); // Reset to default level
+      setActiveLevel(3); // Reset to default level
       setActiveType("compulsory"); // Reset to default type
     }
   };
@@ -93,7 +96,7 @@ const AddCourse = () => {
      
 
       <div className="level-tabs">
-        {[4, 5, 6].map((level) => (
+        {[3, 4, 5, 6].map((level) => (
           <button
             key={level}
             className={`level-tab ${activeLevel === level ? "active" : ""}`}
