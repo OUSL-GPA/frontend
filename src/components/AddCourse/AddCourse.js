@@ -1,15 +1,18 @@
 import React, { useState, useContext } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import "./AddCourse.css";
 import { AuthContext } from "../../context/AuthContext";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { IoReturnUpBack } from "react-icons/io5";
 
 const AddCourse = () => {
   const [courses, setCourses] = useState([]);
   const [activeLevel, setActiveLevel] = useState(4);
   const [activeType, setActiveType] = useState("compulsory");
   const { user } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const userId = user.id;
 
@@ -85,7 +88,9 @@ const AddCourse = () => {
 
   return (
     <div className="course-container">
+       <button className="back-btn" onClick={() => navigate(-1)}><IoReturnUpBack/></button>
       <h1>Add Course & Grades</h1>
+     
 
       <div className="level-tabs">
         {[4, 5, 6].map((level) => (

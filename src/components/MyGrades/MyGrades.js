@@ -1,13 +1,20 @@
 import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
 import "./MyGrades.css";
+import { IoReturnUpBack } from "react-icons/io5";
 
 const MyGrades = () => {
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const { user } = useContext(AuthContext);
+  const [editGrade, setEditGrade] = useState(null);
+  const [newGrade, setNewGrade] = useState("");
+  const navigate = useNavigate();
+
+  const gradeOptions = ["A+", "A", "A-", "B+", "B", "B-", "C+", "C", "C-", "D+", "D", "D-", "F"];
 
   const fetchCourses = async () => {
     try {
@@ -43,6 +50,19 @@ const MyGrades = () => {
     }
   };
 
+  const handleUpdateGrade = async (courseId) => {
+    try {
+      const response = await axios.put(`/api/courses/${courseId}/update-grade`, { grade: newGrade }, {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+      });
+      setCourses(courses.map(course => course._id === courseId ? { ...course, grade: newGrade } : course));
+      setEditGrade(null);
+      setNewGrade("");
+    } catch (err) {
+      setError(err.response?.data?.message || "Failed to update grade");
+    }
+  };
+
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
 
@@ -50,6 +70,7 @@ const MyGrades = () => {
 
   return (
     <div className="my-courses-container">
+      <button className="back-btn" onClick={() => navigate(-1)}><IoReturnUpBack/></button>
       <h1>My Courses</h1>
       
       {safeCourses.length === 0 ? (
@@ -86,11 +107,32 @@ const MyGrades = () => {
                                 <td>{course.courseCode}</td>
                                 <td>{course.courseName}</td>
                                 <td>{course.credits || 'N/A'}</td>
-                                <td>{course.grade || 'N/A'}</td>
                                 <td>
+                                  {editGrade === course._id ? (
+                                    <>
+                                      <select
+                                        value={newGrade}
+                                        onChange={(e) => setNewGrade(e.target.value)}
+                                      >
+                                        <option value="">Select Grade</option>
+                                        {gradeOptions.map((grade) => (
+                                          <option key={grade} value={grade}>{grade}</option>
+                                        ))}
+                                      </select>
+                                      <button className="action-edit-save-btn" onClick={() => handleUpdateGrade(course._id)}>Save</button>
+                                      <button className="action-edit-cancel-btn" onClick={() => setEditGrade(null)}>Cancel</button>
+                                    </>
+                                  ) : (
+                                    <span>{course.grade || 'N/A'} </span>
+                                  )}
+                                </td>
+                                <td>
+                                  {editGrade === course._id ? null : (
+                                    <button className="action-btn-edit" onClick={() => { setEditGrade(course._id); setNewGrade(course.grade || ""); }}>Edit</button>
+                                  )}
                                   <button 
                                     onClick={() => handleDeleteCourse(course._id)}
-                                    className="delete-btn"
+                                    className="action-btn-delete"
                                   >
                                     Delete
                                   </button>
