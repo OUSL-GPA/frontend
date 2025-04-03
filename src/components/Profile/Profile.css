@@ -186,12 +186,11 @@
   }
   
   .back-button:hover {
-    background-color: #f0f0f0;
-    transform: translateX(-3px);
+    transform: scale(1.2);
   }
   
   .back-icon {
-    font-size: 0.9rem;
+    font-size: 1.7rem;
   }
   
   .profile-header {
@@ -217,4 +216,15 @@
   .edit-btn {
     position: absolute;
     right: 20px;
+  }
+
+  .change-password-btn{
+    background-color: #e53e3e;
+    color: white;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
   }

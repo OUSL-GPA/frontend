@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import { FaArrowLeft } from 'react-icons/fa';
 import './Profile.css';
+import { IoReturnUpBack } from "react-icons/io5";
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -173,7 +173,7 @@ const Profile = () => {
     <div className="profile-container">
       <div className="profile-header">
         <button className="back-button" onClick={handleBack}>
-          <FaArrowLeft className="back-icon" /> Back
+          <IoReturnUpBack className="back-icon" />
         </button>
         <h1>{formData.name}'s Profile</h1>
         {!editMode && (
@@ -295,6 +295,12 @@ const Profile = () => {
               <span className="info-value">
                 {new Date(userData?.createdAt).toLocaleDateString()}
               </span>
+            </div>
+            <div className="info-item">
+              <button
+                className="change-password-btn"
+                onClick={toast.info.bind(null, 'Change Password feature coming soon!')}>
+                Change Password</button>
             </div>
           </div>
         )}

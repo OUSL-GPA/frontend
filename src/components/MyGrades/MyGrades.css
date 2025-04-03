@@ -109,3 +109,77 @@
     transform: scale(1.3);
     color: #e53e3e;
   }
+
+
+
+  /* Modal Styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  backdrop-filter: blur(3px);
+}
+
+.modal-content {
+  background-color: white;
+  padding: 2rem;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 400px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+.modal-content h3 {
+  margin-top: 0;
+  color: #2c3e50;
+  font-size: 1.4rem;
+  margin-bottom: 1rem;
+}
+
+.modal-content p {
+  margin-bottom: 2rem;
+  color: #7f8c8d;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.modal-buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+}
+
+.modal-buttons .confirm-btn,
+.modal-buttons .cancel-btn {
+  padding: 0.7rem 1.4rem;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+}
+
+.modal-buttons .confirm-btn {
+  background-color: #e74c3c;
+  color: white;
+}
+
+.modal-buttons .confirm-btn:hover {
+  background-color: #c0392b;
+}
+
+.modal-buttons .cancel-btn {
+  background-color: #ecf0f1;
+  color: #2c3e50;
+}
+
+.modal-buttons .cancel-btn:hover {
+  background-color: #bdc3c7;
+}

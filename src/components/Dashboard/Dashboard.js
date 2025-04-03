@@ -283,8 +283,8 @@ const Dashboard = () => {
             onClick={() => {toast.info("This feature is coming soon!")}}
           >
             <div className="card-icon">🧮</div>
-            <h3>GPA Calculator</h3>
-            <p>Calculate and track your semester GPA</p>
+            <h3>Eligiblity to Degree</h3>
+            <p>Courses, needed to get eligible for certificate</p>
           </motion.div>
 
           <motion.div
@@ -294,8 +294,8 @@ const Dashboard = () => {
             onClick={() => {toast.info("This feature is coming soon!")}}
           >
             <div className="card-icon">🗓️</div>
-            <h3>Schedule</h3>
-            <p>View your class timetable</p>
+            <h3>Discussion</h3>
+            <p>Add here a Discussion Topics, Replies & engage with other users</p>
           </motion.div>
         </div>
       </div>
