@@ -148,7 +148,7 @@ const MyGrades = () => {
                                 {typeCourses.map((course) => (
                                   <tr key={course._id}>
                                     <td>{course.courseCode}</td>
-                                    <td>{course.courseName}</td>
+                                    <td id="course-name">{course.courseName}</td>
                                     <td>{course.credits || "N/A"}</td>
                                     <td>
                                       {editGrade === course._id ? (

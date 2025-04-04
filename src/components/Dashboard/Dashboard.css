@@ -99,7 +99,7 @@
   align-items: center;
   justify-content: space-between;
   background-color: #eeecec;
-  padding: 1rem;
+  padding: 0.02rem 2rem;
   border-radius: 10px;
   margin-bottom: 2rem;
   box-shadow: 0 2px 5px rgba(0,0,0,0.05);
@@ -266,7 +266,17 @@
 .gpa-display-container {
   background: white;
   border-radius: 12px;
-  padding: 20px;
+  height: 250px;
+  padding: 10px 50px;
+  margin: 20px 0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.left-side{
+  background: white;
+  border-radius: 12px;
+  height: 150px;
+  padding: 60px 50px;
   margin: 20px 0;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }

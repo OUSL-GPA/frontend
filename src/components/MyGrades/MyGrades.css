@@ -1,118 +1,141 @@
 .my-courses-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
-  }
-  
-  .level-section {
-    margin-bottom: 30px;
-    background-color: #e5e5e5;
-    padding: 15px;
-    border-radius: 8px;
-  }
-  
-  .course-type-group {
-    margin-bottom: 20px;
-  }
-  
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 10px;
-  }
-  
-  th, td {
-    padding: 10px;
-    text-align: center;
-    border-bottom: 1px solid #ddd;
-  }
-  
-  th {
-    background-color: #f0f0f0;
-    font-weight: bold;
-  }
-  
-  tr:hover {
-    background-color: #f9f9f9;
-  }
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
 
-  .action-btn-delete {
-    background-color: #ff4444;
-    color: white;
-    margin-inline: 0.5rem;
-    border: none;
-    padding: 5px 10px;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
-  
-  .action-btn-delete:hover {
-    background-color: #cc0000;
-  }
+.level-section {
+  margin-bottom: 30px;
+  background-color: #f8f9fa;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
 
-  .action-btn-edit {
-    background-color: #08ad31;
-    color: white;
-    margin-inline: 0.5rem;
-    border: none;
-    padding: 5px 10px;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
-  
-  .action-btn-edit:hover {
-    background-color: #078603;
-  }
+.course-type-group {
+  margin-bottom: 20px;
+}
 
-  .action-edit-save-btn{
-    background-color: #08ad31;
-    color: white;
-    margin-inline: 0.5rem;
-    border: none;
-    padding: 5px 10px;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+  font-size: 0.95rem;
+}
 
-  .action-edit-save-btn:hover {
-    background-color: #078603;
-  }
+th, td {
+  padding: 12px 8px;
+  text-align: center;
+  border-bottom: 1px solid #e0e0e0;
+}
 
-  .action-edit-cancel-btn{
-    background-color: #ff4444;
-    color: white;
-    margin-inline: 0.5rem;
-    border: none;
-    padding: 5px 10px;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
+#course-name {
+  text-align: left;
+  max-width: 150px;
+  word-break: break-word;
+}
 
-  .action-edit-cancel-btn:hover {
-    background-color: #cc0000;
-  }
+th {
+  background-color: #f0f0f0;
+  font-weight: 600;
+  color: #333;
+}
 
-  .back-btn{
-    color: rgb(0, 0, 0);
-    background-color: #fff;
-    border: none;
-    border-radius: 50%;
-    cursor: pointer;
-    font-size: 25px;
-  }
+tr:hover {
+  background-color: #f5f5f5;
+}
 
-  .back-btn:hover{
-    transform: scale(1.3);
-    color: #e53e3e;
-  }
+.action-btn-delete {
+  background-color: #ff4444;
+  color: white;
+  margin: 0.3rem;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.85rem;
+}
 
+.action-btn-delete:hover {
+  background-color: #cc0000;
+  transform: translateY(-1px);
+}
 
+.action-btn-edit {
+  background-color: #08ad31;
+  color: white;
+  margin: 0.3rem;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.85rem;
+}
 
-  /* Modal Styles */
+.action-btn-edit:hover {
+  background-color: #078603;
+  transform: translateY(-1px);
+}
+
+.action-edit-save-btn {
+  background-color: #08ad31;
+  color: white;
+  margin: 0.3rem;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.85rem;
+}
+
+.action-edit-save-btn:hover {
+  background-color: #078603;
+  transform: translateY(-1px);
+}
+
+.action-edit-cancel-btn {
+  background-color: #ff4444;
+  color: white;
+  margin: 0.3rem;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.85rem;
+}
+
+.action-edit-cancel-btn:hover {
+  background-color: #cc0000;
+  transform: translateY(-1px);
+}
+
+.back-btn {
+  color: #333;
+  background-color: transparent;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 1.5rem;
+  transition: all 0.2s ease;
+  padding: 5px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+}
+
+.back-btn:hover {
+  transform: scale(1.1);
+  color: #e53e3e;
+  background-color: rgba(0,0,0,0.05);
+}
+
+/* Modal Styles */
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -129,7 +152,7 @@
 
 .modal-content {
   background-color: white;
-  padding: 2rem;
+  padding: 1.5rem;
   border-radius: 12px;
   width: 90%;
   max-width: 400px;
@@ -139,31 +162,32 @@
 .modal-content h3 {
   margin-top: 0;
   color: #2c3e50;
-  font-size: 1.4rem;
+  font-size: 1.3rem;
   margin-bottom: 1rem;
 }
 
 .modal-content p {
-  margin-bottom: 2rem;
-  color: #7f8c8d;
-  font-size: 1rem;
+  margin-bottom: 1.5rem;
+  color: #555;
+  font-size: 0.95rem;
   line-height: 1.5;
 }
 
 .modal-buttons {
   display: flex;
-  gap: 1rem;
+  gap: 0.8rem;
   justify-content: flex-end;
 }
 
 .modal-buttons .confirm-btn,
 .modal-buttons .cancel-btn {
-  padding: 0.7rem 1.4rem;
+  padding: 0.6rem 1.2rem;
   border-radius: 6px;
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s ease;
   border: none;
+  font-size: 0.9rem;
 }
 
 .modal-buttons .confirm-btn {
@@ -182,4 +206,119 @@
 
 .modal-buttons .cancel-btn:hover {
   background-color: #bdc3c7;
+}
+
+/* Mobile Responsive Styles */
+@media (max-width: 768px) {
+  .my-courses-container {
+    padding: 15px;
+  }
+  
+  .level-section {
+    padding: 12px;
+    margin-bottom: 20px;
+  }
+  
+  table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  th, td {
+    padding: 8px 6px;
+    font-size: 0.85rem;
+  }
+  
+  #course-name {
+    max-width: 120px;
+  }
+  
+  .action-btn-delete,
+  .action-btn-edit,
+  .action-edit-save-btn,
+  .action-edit-cancel-btn {
+    padding: 5px 8px;
+    font-size: 0.8rem;
+    margin: 0.2rem;
+  }
+  
+  .back-btn {
+    font-size: 1.3rem;
+    width: 36px;
+    height: 36px;
+  }
+  
+  .modal-content {
+    padding: 1.2rem;
+    width: 95%;
+  }
+  
+  .modal-content h3 {
+    font-size: 1.2rem;
+  }
+  
+  .modal-content p {
+    font-size: 0.9rem;
+  }
+  
+  .modal-buttons .confirm-btn,
+  .modal-buttons .cancel-btn {
+    padding: 0.5rem 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .my-courses-container {
+    padding: 10px;
+  }
+  
+  th, td {
+    padding: 6px 4px;
+    font-size: 0.8rem;
+  }
+  
+  #course-name {
+    max-width: 100px;
+  }
+  
+  .modal-content {
+    padding: 1rem;
+  }
+  
+  .modal-content h3 {
+    font-size: 1.1rem;
+  }
+  
+  .modal-buttons {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .modal-buttons .confirm-btn,
+  .modal-buttons .cancel-btn {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+/* Accessibility Improvements */
+button:focus {
+  outline: 2px solid #4d90fe;
+  outline-offset: 2px;
+}
+
+/* Animation for buttons */
+@keyframes buttonPulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+.action-btn-edit:active,
+.action-btn-delete:active,
+.action-edit-save-btn:active,
+.action-edit-cancel-btn:active {
+  animation: buttonPulse 0.3s ease;
 }
