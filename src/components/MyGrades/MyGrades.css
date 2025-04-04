@@ -281,6 +281,7 @@ tr:hover {
   
   #course-name {
     max-width: 100px;
+    word-wrap: break-word;
   }
   
   .modal-content {
