@@ -270,7 +270,7 @@ tr:hover {
   }
 }
 
-@media (max-width: 300px) {
+@media (max-width: 550px) {
   .my-courses-container {
     padding: 10px;
   }
