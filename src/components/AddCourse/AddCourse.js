@@ -169,6 +169,8 @@ const AddCourse = () => {
               <option value="D">D</option>
               <option value="E">E</option>
               <option value="F">F</option>
+              <option value="W">Resit</option>
+              <option value="I">Repeat</option>
             </select>
           </div>
           <input type="hidden" name="courseType" value={activeType} />

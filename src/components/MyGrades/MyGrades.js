@@ -30,6 +30,8 @@ const MyGrades = () => {
     "D",
     "D-",
     "F",
+    "Resit",
+    "Repeat",
   ];
 
   const fetchCourses = useCallback(async () => {
