@@ -270,7 +270,7 @@ tr:hover {
   }
 }
 
-@media (max-width: 550px) {
+@media (max-width: 480px) {
   .my-courses-container {
     padding: 10px;
   }
@@ -281,7 +281,7 @@ tr:hover {
   }
   
   #course-name {
-    max-width: 70px;
+    max-width: 50px;
     word-wrap: break-word;
   }
   
