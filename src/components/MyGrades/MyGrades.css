@@ -233,6 +233,7 @@ tr:hover {
   
   #course-name {
     max-width: 120px;
+    word-wrap: break-word;
   }
   
   .action-btn-delete,
