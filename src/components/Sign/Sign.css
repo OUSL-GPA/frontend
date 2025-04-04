@@ -92,7 +92,6 @@
 
 .form-group input:focus {
   outline: none;
-  border-color: #3182ce;
   box-shadow: 0 0 0 3px rgba(49, 130, 206, 0.2);
 }
 
@@ -163,13 +162,7 @@
   }
 }
 
-/* Accessibility improvements */
-.toggle-btn:focus-visible,
-.submit-btn:focus-visible,
-.form-group input:focus-visible {
-  outline: 2px solid #3182ce;
-  outline-offset: 2px;
-}
+
 
 /* Reduced motion preference */
 @media (prefers-reduced-motion: reduce) {

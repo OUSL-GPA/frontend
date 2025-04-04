@@ -31,7 +31,6 @@ const Dashboard = () => {
   const closeLogoutConfirm = () => setShowLogoutConfirm(false);
   const navigateToProfile = () => navigate("/profile");
 
-  // ✅ Wrapped fetchGPA inside useCallback
   const fetchGPA = useCallback(async () => {
     setGpaLoading(true);
     try {
@@ -73,11 +72,13 @@ const Dashboard = () => {
     }
   }, [userId, fetchGPA]);
 
-  const getGpaColor = (gpaValue) => {
-    if (gpaValue === null || gpaValue === undefined) return "#666";
-    if (gpaValue >= 3.5) return "#2ecc71";
-    if (gpaValue >= 2.5) return "#f39c12";
-    return "#e74c3c";
+  const getClassification = (gpaValue) => {
+    if (gpaValue === null || gpaValue === undefined) return null;
+    if (gpaValue >= 3.7) return "first";
+    if (gpaValue >= 3.3) return "upper";
+    if (gpaValue >= 2.7) return "lower";
+    if (gpaValue >= 2.0) return "general";
+    return "below";
   };
 
   return (
@@ -200,7 +201,7 @@ const Dashboard = () => {
                 </div>
                 <div
                   className="gpa-value"
-                  style={{ color: getGpaColor(gpa) }}
+                  data-classification={getClassification(gpa)}
                 >
                   {gpaLoading ? (
                     <div className="gpa-loading">Calculating...</div>
@@ -216,12 +217,19 @@ const Dashboard = () => {
                   )}
                 </div>
                 {gpa !== null && !gpaLoading && (
-                  <div className="gpa-message">
-                    {gpa >= 3.5
-                      ? "Excellent work! Keep it up!"
-                      : gpa >= 2.5
-                      ? "Good progress! You're doing well."
-                      : "Let's work on improving this together."}
+                  <div 
+                    className="gpa-message"
+                    data-classification={getClassification(gpa)}
+                  >
+                    {gpa >= 3.7
+                      ? "1st Class - Excellent work! Keep it up!"
+                      : gpa >= 3.3
+                      ? "2nd Upper Class - Good performance!"
+                      : gpa >= 2.7
+                      ? "2nd Lower Class - You're doing well."
+                      : gpa >= 2.0
+                      ? "General - Let's work on improving this together."
+                      : "Below General - More effort needed."}
                   </div>
                 )}
               </div>

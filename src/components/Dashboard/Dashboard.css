@@ -1,9 +1,9 @@
 /* Dashboard Container */
 .dashboard-container {
-  padding: 1rem;
+  padding: 0rem 1rem;
   max-width: 1200px;
   margin: 0 auto;
-  min-height: 100vh;
+  max-height: 100vh;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
@@ -12,7 +12,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
   padding-bottom: 1rem;
   border-bottom: 1px solid #e0e0e0;
   flex-wrap: wrap;
@@ -105,7 +105,7 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.5rem;
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
 }
 
 .left-side {
@@ -135,12 +135,14 @@
   color: #34495e;
 }
 
-/* GPA Display Styles */
+/* Enhanced GPA Display Styles */
 .gpa-display-container {
   background: white;
   border-radius: 12px;
   padding: 1.5rem;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  position: relative;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -148,126 +150,148 @@
 
 .gpa-header {
   display: flex;
-  flex-direction: column;
-  gap: 0.8rem;
-  margin-bottom: 1rem;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
 }
 
 .gpa-header h3 {
+  font-size: 1.4rem;
+  color: #2c3e50;
   margin: 0;
-  font-size: 1.2rem;
-  color: #333;
-  text-align: center;
 }
 
 .refresh-gpa-btn {
   background: #3498db;
   color: white;
   border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 4px;
-  cursor: pointer;
+  padding: 6px 12px;
+  border-radius: 6px;
   font-size: 0.9rem;
+  cursor: pointer;
   transition: all 0.3s ease;
-  align-self: center;
 }
 
 .refresh-gpa-btn:hover {
   background: #2980b9;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
 }
 
 .refresh-gpa-btn:disabled {
-  background: #95a5a6;
+  background: #bdc3c7;
   cursor: not-allowed;
   transform: none;
-  box-shadow: none;
 }
 
 .gpa-value {
-  font-size: 3rem;
-  font-weight: bold;
+  font-size: 3.5rem;
+  font-weight: 700;
   text-align: center;
-  margin: 1rem 0;
+  margin: 20px 0;
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+  gap: 5px;
+}
+
+/* GPA Value Colors */
+.gpa-value[data-classification="first"] {
+  color: #27ae60;
+}
+
+.gpa-value[data-classification="upper"] {
+  color: #2980b9;
+}
+
+.gpa-value[data-classification="lower"] {
+  color: #f39c12;
+}
+
+.gpa-value[data-classification="general"] {
+  color: #e67e22;
+}
+
+.gpa-value[data-classification="below"] {
+  color: #e74c3c;
 }
 
 .gpa-number {
-  font-size: 3.5rem;
+  font-size: 4rem;
 }
 
 .gpa-scale {
-  font-size: 1.5rem;
+  font-size: 1.8rem;
   color: #7f8c8d;
+  font-weight: 500;
 }
 
 .gpa-message {
   text-align: center;
-  font-style: italic;
-  color: #555;
-  margin-top: 0.5rem;
+  font-size: 1.1rem;
+  padding: 12px;
+  border-radius: 8px;
+  margin-top: 10px;
+  font-weight: 600;
+  position: relative;
+}
+
+/* Different background colors based on classification */
+.gpa-message:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 8px;
+  opacity: 0.1;
+  z-index: 0;
+}
+
+/* 1st Class */
+.gpa-message[data-classification="first"] {
+  color: #27ae60;
+}
+.gpa-message[data-classification="first"]:before {
+  background: #27ae60;
+}
+
+/* 2nd Upper */
+.gpa-message[data-classification="upper"] {
+  color: #2980b9;
+}
+.gpa-message[data-classification="upper"]:before {
+  background: #2980b9;
+}
+
+/* 2nd Lower */
+.gpa-message[data-classification="lower"] {
+  color: #f39c12;
+}
+.gpa-message[data-classification="lower"]:before {
+  background: #f39c12;
+}
+
+/* General */
+.gpa-message[data-classification="general"] {
+  color: #e67e22;
+}
+.gpa-message[data-classification="general"]:before {
+  background: #e67e22;
+}
+
+/* Below General */
+.gpa-message[data-classification="below"] {
+  color: #e74c3c;
+}
+.gpa-message[data-classification="below"]:before {
+  background: #e74c3c;
 }
 
 .gpa-loading, .gpa-error {
+  font-size: 1.2rem;
+  color: #7f8c8d;
   text-align: center;
-  padding: 0.5rem;
-}
-
-/* GPA Level Selection */
-.GPA-level-selection {
-  background: white;
-  border-radius: 12px;
-  padding: 1.5rem;
-  margin: 1.5rem 0;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-.divider-line {
-  font-weight: 600;
-  margin-bottom: 1rem;
-  padding-bottom: 0.5rem;
-  border-bottom: 1px solid #eee;
-  color: #2c3e50;
-}
-
-.level-selection-container {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 1.5rem;
-}
-
-.level-selection {
-  display: flex;
-  flex-direction: column;
-  gap: 0.8rem;
-}
-
-.level-header {
-  display: flex;
-  align-items: center;
-  gap: 0.8rem;
-}
-
-.level-label {
-  font-weight: 500;
-  min-width: 60px;
-}
-
-.course-type-selection {
-  display: flex;
-  gap: 1rem;
-  margin-left: 1.5rem;
-}
-
-.course-type-option {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.course-type-label {
-  font-size: 0.9rem;
-  color: #34495e;
 }
 
 /* Dashboard Cards */
@@ -275,7 +299,7 @@
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 1.5rem;
-  margin-top: 1.5rem;
+  margin-top: 0.5rem;
 }
 
 .dashboard-card {
@@ -410,32 +434,6 @@
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-/* Loading and Error States */
-.loading-screen, .error-screen {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  font-size: 1.5rem;
-}
-
-.error-screen {
-  color: #e74c3c;
-}
-
-/* Checkbox Styles */
-input[type="checkbox"] {
-  width: 18px;
-  height: 18px;
-  accent-color: #3498db;
-  cursor: pointer;
-}
-
-input[type="checkbox"]:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
 /* Responsive Design */
 @media (max-width: 1024px) {
   .user-info {
@@ -470,12 +468,6 @@ input[type="checkbox"]:disabled {
   
   .dashboard-cards {
     grid-template-columns: 1fr;
-  }
-  
-  .course-type-selection {
-    flex-direction: column;
-    gap: 0.5rem;
-    margin-left: 1rem;
   }
   
   .logout-modal-buttons {
