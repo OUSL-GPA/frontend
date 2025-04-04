@@ -281,6 +281,9 @@ tr:hover {
     display: flex;
     flex-direction: column;
   }
+  #action-column{
+    display: none;
+  }
 }
 
 @media (max-width: 480px) {
