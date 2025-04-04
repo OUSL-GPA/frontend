@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, useCallback } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
@@ -32,7 +32,7 @@ const MyGrades = () => {
     "F",
   ];
 
-  const fetchCourses = async () => {
+  const fetchCourses = useCallback(async () => {
     try {
       const response = await axios.get(`/api/courses/${user.id}`, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
@@ -44,11 +44,11 @@ const MyGrades = () => {
       setCourses([]);
       setLoading(false);
     }
-  };
+  }, [user.id]);
 
   useEffect(() => {
     fetchCourses();
-  }, [user.id]);
+  }, [fetchCourses]);
 
   const handleDeleteCourse = async (courseId) => {
     if (!courseId) return;
@@ -56,9 +56,8 @@ const MyGrades = () => {
       await axios.delete(`/api/courses/${courseId}`, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       });
-      // Filter out the deleted course instead of refetching
       setCourses(courses.filter((course) => course._id !== courseId));
-      setIsModalOpen(false); // Close the modal after delete
+      setIsModalOpen(false);
     } catch (err) {
       setError(err.response?.data?.message || "Failed to delete course");
     }
@@ -66,7 +65,7 @@ const MyGrades = () => {
 
   const handleUpdateGrade = async (courseId) => {
     try {
-      const response = await axios.put(
+      await axios.put(
         `/api/courses/${courseId}/update-grade`,
         { grade: newGrade },
         {
@@ -131,8 +130,7 @@ const MyGrades = () => {
                         typeCourses.length > 0 && (
                           <div key={type} className="course-type-group">
                             <h3>
-                              {type.charAt(0).toUpperCase() + type.slice(1)}{" "}
-                              Courses
+                              {type.charAt(0).toUpperCase() + type.slice(1)} Courses
                             </h3>
                             <table>
                               <thead>
@@ -220,7 +218,6 @@ const MyGrades = () => {
         </div>
       )}
 
-      {/* Delete Confirmation Modal */}
       {isModalOpen && (
         <div className="modal-overlay">
           <div className="modal-content">
