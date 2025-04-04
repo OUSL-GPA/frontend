@@ -7,7 +7,7 @@ import axios from 'axios';
 import { AuthContextProvider } from './context/AuthContext.js';
 
 
-axios.defaults.baseURL = 'http://localhost:5000';
+axios.defaults.baseURL = 'https://backend-production-07da.up.railway.app/';
 axios.interceptors.request.use((config) => {
   const token = localStorage.getItem('token');
   if (token) {
