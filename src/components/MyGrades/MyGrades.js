@@ -141,7 +141,7 @@ const MyGrades = () => {
                                   <th>Course Name</th>
                                   <th>Credits</th>
                                   <th>Grade</th>
-                                  <th>Action</th>
+                                  <th id="action-column">Action</th>
                                 </tr>
                               </thead>
                               <tbody>
@@ -150,7 +150,7 @@ const MyGrades = () => {
                                     <td>{course.courseCode}</td>
                                     <td id="course-name">{course.courseName}</td>
                                     <td>{course.credits || "N/A"}</td>
-                                    <td>
+                                    <td id="grade-column">
                                       {editGrade === course._id ? (
                                         <>
                                           <select
@@ -185,7 +185,7 @@ const MyGrades = () => {
                                         <span>{course.grade || "N/A"} </span>
                                       )}
                                     </td>
-                                    <td>
+                                    <td id="action-buttons">
                                       {editGrade === course._id ? null : (
                                         <button
                                           className="action-btn-edit"

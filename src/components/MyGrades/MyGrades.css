@@ -209,7 +209,7 @@ tr:hover {
 }
 
 /* Mobile Responsive Styles */
-@media (max-width: 768px) {
+@media (max-width: 835px) {
   .my-courses-container {
     padding: 15px;
   }
@@ -222,25 +222,31 @@ tr:hover {
   table {
     display: block;
     overflow-x: auto;
-    white-space: nowrap;
     -webkit-overflow-scrolling: touch;
   }
   
   th, td {
-    padding: 8px 6px;
+    padding: 6px 3px;
     font-size: 0.85rem;
   }
   
   #course-name {
-    max-width: 120px;
-    word-wrap: break-word;
+    text-align: left;
+    max-width: 160px;
+  }
+
+  #action-buttons{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.5rem;
   }
   
   .action-btn-delete,
   .action-btn-edit,
   .action-edit-save-btn,
   .action-edit-cancel-btn {
-    padding: 5px 8px;
+    padding: 4px 5px;
     font-size: 0.8rem;
     margin: 0.2rem;
   }
@@ -270,6 +276,13 @@ tr:hover {
   }
 }
 
+@media (max-width: 835px) {
+  #grade-column{
+    display: flex;
+    flex-direction: column;
+  }
+}
+
 @media (max-width: 480px) {
   .my-courses-container {
     padding: 10px;
@@ -281,8 +294,7 @@ tr:hover {
   }
   
   #course-name {
-    max-width: 50px;
-    word-wrap: break-word;
+    max-width: 120px;
   }
   
   .modal-content {
