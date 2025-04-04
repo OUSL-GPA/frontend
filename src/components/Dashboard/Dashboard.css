@@ -1,9 +1,9 @@
 /* Dashboard Container */
 .dashboard-container {
-  padding: 0.001rem;
+  padding: 1rem;
   max-width: 1200px;
   margin: 0 auto;
-  max-height: 100vh;
+  min-height: 100vh;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
@@ -12,7 +12,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
   padding-bottom: 1rem;
   border-bottom: 1px solid #e0e0e0;
   flex-wrap: wrap;
@@ -34,6 +34,7 @@
   border: 3px solid rgba(255, 255, 255, 0.8);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   background: white;
+  flex-shrink: 0;
 }
 
 .profile-image {
@@ -80,10 +81,10 @@
   align-items: center;
   gap: 0.5rem;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  white-space: nowrap;
 }
 
 .logout-btn:hover {
-  background: linear-gradient(135deg, #ff416c, #ff4b2b);
   transform: translateY(-2px);
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
@@ -93,32 +94,180 @@
   font-size: 1.1rem;
 }
 
+/* Main Content Layout */
+.dashboard-content {
+  display: flex;
+  flex-direction: column;
+}
+
 /* User Info Section */
 .user-info {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background-color: #eeecec;
-  padding: 0.02rem 2rem;
-  border-radius: 10px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
   margin-bottom: 2rem;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
 }
 
-.user-info h2 {
-  margin-top: 0;
-  color: #2478b0;
-  font-size: 1.5rem;
+.left-side {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-.user-info p {
-  margin: 0.5rem 0;
-  font-size: 1rem;
+.info-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.8rem;
+}
+
+.info-item {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.info-label {
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.info-value {
   color: #34495e;
 }
 
-.user-info strong {
+/* GPA Display Styles */
+.gpa-display-container {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.gpa-header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  margin-bottom: 1rem;
+}
+
+.gpa-header h3 {
+  margin: 0;
+  font-size: 1.2rem;
+  color: #333;
+  text-align: center;
+}
+
+.refresh-gpa-btn {
+  background: #3498db;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+  align-self: center;
+}
+
+.refresh-gpa-btn:hover {
+  background: #2980b9;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.refresh-gpa-btn:disabled {
+  background: #95a5a6;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.gpa-value {
+  font-size: 3rem;
+  font-weight: bold;
+  text-align: center;
+  margin: 1rem 0;
+}
+
+.gpa-number {
+  font-size: 3.5rem;
+}
+
+.gpa-scale {
+  font-size: 1.5rem;
+  color: #7f8c8d;
+}
+
+.gpa-message {
+  text-align: center;
+  font-style: italic;
+  color: #555;
+  margin-top: 0.5rem;
+}
+
+.gpa-loading, .gpa-error {
+  text-align: center;
+  padding: 0.5rem;
+}
+
+/* GPA Level Selection */
+.GPA-level-selection {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin: 1.5rem 0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.divider-line {
+  font-weight: 600;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #eee;
   color: #2c3e50;
+}
+
+.level-selection-container {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+.level-selection {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.level-header {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.level-label {
+  font-weight: 500;
+  min-width: 60px;
+}
+
+.course-type-selection {
+  display: flex;
+  gap: 1rem;
+  margin-left: 1.5rem;
+}
+
+.course-type-option {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.course-type-label {
+  font-size: 0.9rem;
+  color: #34495e;
 }
 
 /* Dashboard Cards */
@@ -126,7 +275,7 @@
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 1.5rem;
-  margin-top: 2rem;
+  margin-top: 1.5rem;
 }
 
 .dashboard-card {
@@ -137,6 +286,9 @@
   transition: all 0.3s ease;
   cursor: pointer;
   border: 1px solid #e0e0e0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
 }
 
 .dashboard-card:hover {
@@ -146,8 +298,7 @@
 
 .dashboard-card h3 {
   color: #2c3e50;
-  margin-top: 0;
-  margin-bottom: 0.5rem;
+  margin: 0;
   font-size: 1.2rem;
 }
 
@@ -157,7 +308,12 @@
   font-size: 0.95rem;
 }
 
-/* Logout Modal Styles */
+.card-icon {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+}
+
+/* Modal Styles */
 .logout-modal-overlay {
   position: fixed;
   top: 0;
@@ -174,7 +330,7 @@
 
 .logout-modal {
   background-color: white;
-  padding: 2rem;
+  padding: 1.5rem;
   border-radius: 12px;
   width: 90%;
   max-width: 400px;
@@ -184,12 +340,12 @@
 .logout-modal h3 {
   margin-top: 0;
   color: #2c3e50;
-  font-size: 1.4rem;
+  font-size: 1.3rem;
   margin-bottom: 1rem;
 }
 
 .logout-modal p {
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
   color: #7f8c8d;
   font-size: 1rem;
   line-height: 1.5;
@@ -202,156 +358,40 @@
 }
 
 .confirm-btn, .cancel-btn {
-  padding: 0.7rem 1.4rem;
+  padding: 0.6rem 1.2rem;
   border-radius: 6px;
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s ease;
   border: none;
+  font-size: 0.9rem;
 }
 
-.logout-modal-buttons .confirm-btn {
+.confirm-btn {
   background-color: #e74c3c;
   color: white;
 }
 
-.logout-modal-buttons .confirm-btn:hover {
+.confirm-btn:hover {
   background-color: #c0392b;
 }
 
-.logout-modal-buttons .cancel-btn {
+.cancel-btn {
   background-color: #ecf0f1;
   color: #2c3e50;
 }
 
-.logout-modal-buttons .cancel-btn:hover {
+.cancel-btn:hover {
   background-color: #bdc3c7;
 }
 
-/* Responsive Design */
-@media (max-width: 768px) {
-  .dashboard-header {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .header-right {
-    width: 100%;
-    justify-content: space-between;
-    margin-top: 1rem;
-  }
-
-  .dashboard-cards {
-    grid-template-columns: 1fr;
-  }
-
-  .logout-modal {
-    padding: 1.5rem;
-  }
-
-  .logout-modal-buttons {
-    flex-direction: column;
-    gap: 0.8rem;
-  }
-
-  .confirm-btn, .cancel-btn {
-    width: 100%;
-  }
-}
-
-
-
-
-/* GPA Display Styles */
-.gpa-display-container {
-  background: white;
-  border-radius: 12px;
-  height: 250px;
-  padding: 10px 50px;
-  margin: 20px 0;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-.left-side{
-  background: white;
-  border-radius: 12px;
-  height: 150px;
-  padding: 60px 50px;
-  margin: 20px 0;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-.gpa-header {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 15px;
-}
-
-.gpa-header h3 {
-  margin: 0;
-  font-size: 1.2rem;
-  color: #333;
-}
-
-.refresh-gpa-btn {
-  background: #3498db;
-  color: white;
-  border: none;
-  padding: 5px 10px;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 0.9rem;
-}
-
-.refresh-gpa-btn:hover {
-  background: linear-gradient(135deg, #ff416c, #ff4b2b);
-  transform: scale(1.05);
-  transition: all 0.5s ease;
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-}
-
-.refresh-gpa-btn:disabled {
-  background: #95a5a6;
-  cursor: not-allowed;
-}
-
-.gpa-value {
-  font-size: 3rem;
-  font-weight: bold;
-  text-align: center;
-  margin: 15px 0;
-}
-
-.gpa-number {
-  font-size: 4rem;
-}
-
-.gpa-scale {
-  font-size: 1.5rem;
-  color: #7f8c8d;
-}
-
-.gpa-message {
-  text-align: center;
-  font-style: italic;
-  color: #555;
-  margin-top: 10px;
-}
-
-.gpa-loading, .gpa-error {
-  text-align: center;
-  padding: 10px;
-}
-
-/* Card Styles */
+/* Special Card Styles */
 .primary-card {
   background: linear-gradient(135deg, #3498db, #2c3e50);
   color: white;
 }
 
+.primary-card h3,
 .primary-card .card-icon {
   color: white;
 }
@@ -360,8 +400,14 @@
   color: rgba(255, 255, 255, 0.8);
 }
 
-.disabled-card{
-  opacity: 0.4;
+.disabled-card {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.disabled-card:hover {
+  transform: none;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 /* Loading and Error States */
@@ -375,4 +421,114 @@
 
 .error-screen {
   color: #e74c3c;
+}
+
+/* Checkbox Styles */
+input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: #3498db;
+  cursor: pointer;
+}
+
+input[type="checkbox"]:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .user-info {
+    grid-template-columns: 1fr;
+  }
+  
+  .left-side {
+    padding: 1.2rem;
+  }
+  
+  .gpa-display-container {
+    padding: 1.2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .dashboard-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+  }
+  
+  .header-right {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+  }
+  
+  .logout-btn {
+    justify-content: center;
+  }
+  
+  .dashboard-cards {
+    grid-template-columns: 1fr;
+  }
+  
+  .course-type-selection {
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-left: 1rem;
+  }
+  
+  .logout-modal-buttons {
+    flex-direction: column;
+  }
+  
+  .confirm-btn, .cancel-btn {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .dashboard-container {
+    padding: 0.8rem;
+  }
+  
+  .profile-section {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .gpa-value {
+    font-size: 2.5rem;
+  }
+  
+  .gpa-number {
+    font-size: 3rem;
+  }
+  
+  .logout-modal {
+    padding: 1.2rem;
+  }
+  
+  .logout-modal h3 {
+    font-size: 1.2rem;
+  }
+}
+
+/* Accessibility Improvements */
+button:focus-visible,
+input[type="checkbox"]:focus-visible {
+  outline: 2px solid #4d90fe;
+  outline-offset: 2px;
+}
+
+/* Animation for buttons */
+@keyframes buttonPulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+button:active {
+  animation: buttonPulse 0.2s ease;
 }
