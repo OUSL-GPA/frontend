@@ -282,7 +282,7 @@ const Dashboard = () => {
             }}
           >
             <div className="card-icon">🗓️</div>
-            <h3>Discussion</h3>
+            <h3>Student Discussions</h3>
             <p>Add here a Discussion Topics, Replies & engage with other users</p>
           </motion.div>
         </div>
