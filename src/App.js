@@ -1,7 +1,6 @@
 import React from "react";
 import "./App.css";
 import { Routes, Route } from "react-router-dom";
-// import Navbar from "./components/Navbar";
 import Dashboard from "./components/Dashboard/Dashboard";
 import Sign from "./components/Sign/Sign";
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -11,6 +10,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import AddCourse from "./components/AddCourse/AddCourse";
 import MyGrades from "./components/MyGrades/MyGrades";
 import Footer from "./components/Footer/Footer";
+import Discussions from "./components/Discussions/Discussions";
 
 function App() {
   return (
@@ -29,6 +29,7 @@ function App() {
             </ProtectedRoute>
           } 
         />
+        <Route path="/discussions" element={<Discussions />} />
       </Routes>
       
       <ToastContainer />

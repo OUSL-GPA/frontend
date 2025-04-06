@@ -217,7 +217,7 @@ const Dashboard = () => {
                   )}
                 </div>
                 {gpa !== null && !gpaLoading && (
-                  <div 
+                  <div
                     className="gpa-message"
                     data-classification={getClassification(gpa)}
                   >
@@ -274,16 +274,16 @@ const Dashboard = () => {
           </motion.div>
 
           <motion.div
-            className="dashboard-card disabled-card"
+            className="dashboard-card"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            onClick={() => {
-              toast.info("This feature is coming soon!");
-            }}
+            onClick={() => navigate("/discussions")}
           >
             <div className="card-icon">🗓️</div>
             <h3>Student Discussions</h3>
-            <p>Add here a Discussion Topics, Replies & engage with other users</p>
+            <p>
+              Add here a Discussion Topics, Replies & engage with other users
+            </p>
           </motion.div>
         </div>
       </div>
