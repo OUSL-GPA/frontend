@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 import { motion, AnimatePresence } from "framer-motion";
 import defaultProfile from "../../assets/default-Profile.png";
 import "./Discussions.css";
+import { IoReturnUpBack } from "react-icons/io5";
 
 const Discussions = () => {
   const [discussions, setDiscussions] = useState([]);
@@ -31,7 +32,9 @@ const Discussions = () => {
         if (filter.search) params.append("search", filter.search);
         if (filter.sort) params.append("sort", filter.sort);
 
-        const response = await axios.get(`/api/discussions?${params.toString()}`);
+        const response = await axios.get(
+          `/api/discussions?${params.toString()}`
+        );
         setDiscussions(response.data);
       } catch (error) {
         toast.error("Failed to fetch discussions");
@@ -129,6 +132,9 @@ const Discussions = () => {
       transition={{ duration: 0.3 }}
     >
       <div className="discussions-header">
+        <button className="back-btn" onClick={() => navigate(-1)}>
+          <IoReturnUpBack />
+        </button>
         <h1>Student Discussions</h1>
         <motion.button
           className="new-discussion-btn"
@@ -158,7 +164,10 @@ const Discussions = () => {
                   id="title"
                   value={newDiscussion.title}
                   onChange={(e) =>
-                    setNewDiscussion({ ...newDiscussion, title: e.target.value })
+                    setNewDiscussion({
+                      ...newDiscussion,
+                      title: e.target.value,
+                    })
                   }
                   required
                   maxLength="200"
@@ -276,7 +285,9 @@ const Discussions = () => {
                     }}
                   />
                   <div className="author-info">
-                    <span className="author-name">{discussion.author.name}</span>
+                    <span className="author-name">
+                      {discussion.author.name}
+                    </span>
                     <span className="discussion-date">
                       {formatDate(discussion.createdAt)}
                     </span>
@@ -315,7 +326,10 @@ const Discussions = () => {
                             <div key={reply._id} className="reply-item">
                               <div className="reply-author">
                                 <img
-                                  src={reply.author.profilePicture || defaultProfile}
+                                  src={
+                                    reply.author.profilePicture ||
+                                    defaultProfile
+                                  }
                                   alt={reply.author.name}
                                   className="reply-avatar"
                                   onError={(e) => {
@@ -333,7 +347,10 @@ const Discussions = () => {
                                 </div>
                               </div>
                               <div className="reply-content">
-                                <p><span>replied - </span>{reply.content}</p>
+                                <p>
+                                  <span>replied - </span>
+                                  {reply.content}
+                                </p>
                               </div>
                             </div>
                           ))}
