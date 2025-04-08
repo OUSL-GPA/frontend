@@ -261,12 +261,10 @@ const Dashboard = () => {
           </motion.div>
 
           <motion.div
-            className="dashboard-card disabled-card"
+            className="dashboard-card"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            onClick={() => {
-              toast.info("This feature is coming soon!");
-            }}
+            onClick={() => navigate(`/my-courses/${userId}/eligibility`)}
           >
             <div className="card-icon">🧮</div>
             <h3>Eligibility to Degree</h3>

@@ -5,8 +5,10 @@ import { motion, AnimatePresence } from "framer-motion";
 import defaultProfile from "../../assets/default-Profile.png";
 import "./Discussions.css";
 import { IoReturnUpBack } from "react-icons/io5";
+import { useNavigate } from "react-router-dom";
 
 const Discussions = () => {
+  const navigate = useNavigate();
   const [discussions, setDiscussions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [newDiscussion, setNewDiscussion] = useState({
@@ -132,7 +134,7 @@ const Discussions = () => {
       transition={{ duration: 0.3 }}
     >
       <div className="discussions-header">
-        <button className="back-btn" onClick={() => navigate(-1)}>
+        <button className="back-btn" onClick={() => navigate('/dashboard')}>
           <IoReturnUpBack />
         </button>
         <h1>Student Discussions</h1>

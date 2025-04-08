@@ -11,6 +11,7 @@ import AddCourse from "./components/AddCourse/AddCourse";
 import MyGrades from "./components/MyGrades/MyGrades";
 import Footer from "./components/Footer/Footer";
 import Discussions from "./components/Discussions/Discussions";
+import Requirement from "./components/Requirement/Requirement";
 
 function App() {
   return (
@@ -30,6 +31,7 @@ function App() {
           } 
         />
         <Route path="/discussions" element={<Discussions />} />
+        <Route path="/my-courses/:userId/eligibility" element={<Requirement />} />
       </Routes>
       
       <ToastContainer />
