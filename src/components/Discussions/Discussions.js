@@ -24,6 +24,7 @@ const Discussions = () => {
     search: "",
     sort: "newest",
   });
+  const [expandedDays, setExpandedDays] = useState({});
 
   useEffect(() => {
     const fetchDiscussions = async () => {
@@ -34,9 +35,7 @@ const Discussions = () => {
         if (filter.search) params.append("search", filter.search);
         if (filter.sort) params.append("sort", filter.sort);
 
-        const response = await axios.get(
-          `/api/discussions?${params.toString()}`
-        );
+        const response = await axios.get(`/api/discussions?${params.toString()}`);
         setDiscussions(response.data);
       } catch (error) {
         toast.error("Failed to fetch discussions");
@@ -66,6 +65,7 @@ const Discussions = () => {
         }
       );
 
+      // Add the new discussion to the beginning of the list
       setDiscussions([response.data, ...discussions]);
       setNewDiscussion({ title: "", content: "", course: "" });
       setShowForm(false);
@@ -120,10 +120,65 @@ const Discussions = () => {
     );
   };
 
-  const formatDate = (dateString) => {
-    const options = { year: "numeric", month: "short", day: "numeric" };
-    return new Date(dateString).toLocaleDateString(undefined, options);
+  const toggleDayExpand = (day) => {
+    setExpandedDays((prev) => ({
+      ...prev,
+      [day]: !prev[day],
+    }));
   };
+
+  const getLocalDate = (dateString) => {
+    const date = new Date(dateString);
+    return new Date(date.getTime() - date.getTimezoneOffset() * 60000);
+  };
+
+  const formatDayHeader = (dateString) => {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    
+    const date = getLocalDate(dateString);
+    date.setHours(0, 0, 0, 0);
+    
+    if (date.getTime() === today.getTime()) {
+      return "Today";
+    }
+    
+    const yesterday = new Date(today);
+    yesterday.setDate(yesterday.getDate() - 1);
+    if (date.getTime() === yesterday.getTime()) {
+      return "Yesterday";
+    }
+    
+    const options = { weekday: "long", year: "numeric", month: "long", day: "numeric" };
+    return date.toLocaleDateString(undefined, options);
+  };
+
+  const groupDiscussionsByDay = () => {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    
+    const grouped = {};
+    
+    discussions.forEach((discussion) => {
+      const localDate = getLocalDate(discussion.createdAt);
+      localDate.setHours(0, 0, 0, 0);
+      
+      const dateKey = localDate.toISOString().split("T")[0];
+      
+      if (!grouped[dateKey]) {
+        grouped[dateKey] = [];
+      }
+      
+      grouped[dateKey].push(discussion);
+    });
+    
+    // Sort days in descending order
+    const sortedDays = Object.keys(grouped).sort((a, b) => new Date(b) - new Date(a));
+    
+    return { grouped, sortedDays };
+  };
+
+  const { grouped, sortedDays } = groupDiscussionsByDay();
 
   return (
     <motion.div
@@ -134,7 +189,7 @@ const Discussions = () => {
       transition={{ duration: 0.3 }}
     >
       <div className="discussions-header">
-        <button className="back-btn" onClick={() => navigate('/dashboard')}>
+        <button className="back-btn" onClick={() => navigate("/dashboard")}>
           <IoReturnUpBack />
         </button>
         <h1>Student Discussions</h1>
@@ -264,126 +319,194 @@ const Discussions = () => {
         </div>
       ) : (
         <div className="discussions-list">
-          {discussions.map((discussion) => (
-            <motion.div
-              key={discussion._id}
-              className="discussion-card"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3 }}
-            >
-              <div
-                className="discussion-header"
-                onClick={() => handleDiscussionClick(discussion)}
-              >
-                <div className="discussion-author">
-                  <img
-                    src={discussion.author.profilePicture || defaultProfile}
-                    alt={discussion.author.name}
-                    className="author-avatar"
-                    onError={(e) => {
-                      e.target.onerror = null;
-                      e.target.src = defaultProfile;
-                    }}
-                  />
-                  <div className="author-info">
-                    <span className="author-name">
-                      {discussion.author.name}
-                    </span>
-                    <span className="discussion-date">
-                      {formatDate(discussion.createdAt)}
-                    </span>
-                  </div>
-                </div>
-                <div className="discussion-meta">
-                  <span className="discussion-course">{discussion.course}</span>
-                </div>
-              </div>
-              <div
-                className="discussion-content"
-                onClick={() => handleDiscussionClick(discussion)}
-              >
-                <h3>{discussion.title}</h3>
-                <p>{discussion.content}</p>
-              </div>
-              <div className="discussion-footer">
-                <button className="reply-btn">
-                  <span>💬</span> {discussion.replies.length} Replies
-                </button>
-              </div>
+          {sortedDays.map((day) => {
+            const dayDiscussions = grouped[day];
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            const dayDate = getLocalDate(day);
+            dayDate.setHours(0, 0, 0, 0);
+            const isToday = dayDate.getTime() === today.getTime();
+            const isExpanded = expandedDays[day] || isToday;
 
-              <AnimatePresence>
-                {selectedDiscussion &&
-                  selectedDiscussion._id === discussion._id && (
+            return (
+              <div key={day} className="day-group">
+                <div
+                  className={`day-header ${isToday ? "today" : ""}`}
+                  onClick={() => !isToday && toggleDayExpand(day)}
+                >
+                  <h2>{formatDayHeader(day)}</h2>
+                  {!isToday && (
+                    <span className="toggle-icon">
+                      {isExpanded ? "▼" : "▶"}
+                    </span>
+                  )}
+                </div>
+
+                <AnimatePresence>
+                  {isExpanded && (
                     <motion.div
-                      className="discussion-replies"
                       initial={{ opacity: 0, height: 0 }}
                       animate={{ opacity: 1, height: "auto" }}
                       exit={{ opacity: 0, height: 0 }}
                       transition={{ duration: 0.3 }}
                     >
-                      {discussion.replies.length > 0 ? (
-                        <div className="replies-list">
-                          {discussion.replies.map((reply) => (
-                            <div key={reply._id} className="reply-item">
-                              <div className="reply-author">
-                                <img
-                                  src={
-                                    reply.author.profilePicture ||
-                                    defaultProfile
-                                  }
-                                  alt={reply.author.name}
-                                  className="reply-avatar"
-                                  onError={(e) => {
-                                    e.target.onerror = null;
-                                    e.target.src = defaultProfile;
-                                  }}
-                                />
-                                <div className="reply-author-info">
-                                  <span className="reply-author-name">
-                                    {reply.author.name}
-                                  </span>
-                                  <span className="reply-date">
-                                    {formatDate(reply.createdAt)}
-                                  </span>
-                                </div>
-                              </div>
-                              <div className="reply-content">
-                                <p>
-                                  <span>replied - </span>
-                                  {reply.content}
-                                </p>
+                      {dayDiscussions.map((discussion) => (
+                        <motion.div
+                          key={discussion._id}
+                          className={`discussion-card ${
+                            selectedDiscussion &&
+                            selectedDiscussion._id === discussion._id
+                              ? "selected"
+                              : ""
+                          }`}
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ duration: 0.3 }}
+                        >
+                          <div
+                            className="discussion-header"
+                            onClick={() => handleDiscussionClick(discussion)}
+                          >
+                            <div className="discussion-author">
+                              <img
+                                src={
+                                  discussion.author.profilePicture ||
+                                  defaultProfile
+                                }
+                                alt={discussion.author.name}
+                                className="author-avatar"
+                                onError={(e) => {
+                                  e.target.onerror = null;
+                                  e.target.src = defaultProfile;
+                                }}
+                              />
+                              <div className="author-info">
+                                <span className="author-name">
+                                  {discussion.author.name}
+                                </span>
+                                <span className="discussion-time">
+                                  {getLocalDate(
+                                    discussion.createdAt
+                                  ).toLocaleTimeString([], {
+                                    hour: "2-digit",
+                                    minute: "2-digit",
+                                  })}
+                                </span>
                               </div>
                             </div>
-                          ))}
-                        </div>
-                      ) : (
-                        <div className="no-replies">
-                          No replies yet. Be the first to reply!
-                        </div>
-                      )}
+                            <div className="discussion-meta">
+                              <span className="discussion-course">
+                                {discussion.course}
+                              </span>
+                            </div>
+                          </div>
+                          <div
+                            className="discussion-content"
+                            onClick={() => handleDiscussionClick(discussion)}
+                          >
+                            <h3>{discussion.title}</h3>
+                            <p>{discussion.content}</p>
+                          </div>
+                          <div className="discussion-footer">
+                            <button className="reply-btn">
+                              <span>💬</span> {discussion.replies.length} Replies
+                            </button>
+                          </div>
 
-                      <div className="add-reply">
-                        <textarea
-                          placeholder="Write your reply..."
-                          value={replyContent}
-                          onChange={(e) => setReplyContent(e.target.value)}
-                          rows="3"
-                        />
-                        <motion.button
-                          className="submit-reply-btn"
-                          onClick={() => handleAddReply(discussion._id)}
-                          whileHover={{ scale: 1.02 }}
-                          whileTap={{ scale: 0.98 }}
-                        >
-                          Post Reply
-                        </motion.button>
-                      </div>
+                          <AnimatePresence>
+                            {selectedDiscussion &&
+                              selectedDiscussion._id === discussion._id && (
+                                <motion.div
+                                  className="discussion-replies"
+                                  initial={{ opacity: 0, height: 0 }}
+                                  animate={{ opacity: 1, height: "auto" }}
+                                  exit={{ opacity: 0, height: 0 }}
+                                  transition={{ duration: 0.3 }}
+                                >
+                                  {discussion.replies.length > 0 ? (
+                                    <div className="replies-list">
+                                      {discussion.replies.map((reply) => (
+                                        <div
+                                          key={reply._id}
+                                          className="reply-item"
+                                        >
+                                          <div className="reply-author">
+                                            <img
+                                              src={
+                                                reply.author.profilePicture ||
+                                                defaultProfile
+                                              }
+                                              alt={reply.author.name}
+                                              className="reply-avatar"
+                                              onError={(e) => {
+                                                e.target.onerror = null;
+                                                e.target.src = defaultProfile;
+                                              }}
+                                            />
+                                            <div className="reply-author-info">
+                                              <span className="reply-author-name">
+                                                {reply.author.name}
+                                              </span>
+                                              <span className="reply-date">
+                                                {formatDayHeader(
+                                                  reply.createdAt
+                                                )}{" "}
+                                                at{" "}
+                                                {getLocalDate(
+                                                  reply.createdAt
+                                                ).toLocaleTimeString([], {
+                                                  hour: "2-digit",
+                                                  minute: "2-digit",
+                                                })}
+                                              </span>
+                                            </div>
+                                          </div>
+                                          <div className="reply-content">
+                                            <p>
+                                              <span>replied - </span>
+                                              {reply.content}
+                                            </p>
+                                          </div>
+                                        </div>
+                                      ))}
+                                    </div>
+                                  ) : (
+                                    <div className="no-replies">
+                                      No replies yet. Be the first to reply!
+                                    </div>
+                                  )}
+
+                                  <div className="add-reply">
+                                    <textarea
+                                      placeholder="Write your reply..."
+                                      value={replyContent}
+                                      onChange={(e) =>
+                                        setReplyContent(e.target.value)
+                                      }
+                                      rows="3"
+                                    />
+                                    <motion.button
+                                      className="submit-reply-btn"
+                                      onClick={() =>
+                                        handleAddReply(discussion._id)
+                                      }
+                                      whileHover={{ scale: 1.02 }}
+                                      whileTap={{ scale: 0.98 }}
+                                    >
+                                      Post Reply
+                                    </motion.button>
+                                  </div>
+                                </motion.div>
+                              )}
+                          </AnimatePresence>
+                        </motion.div>
+                      ))}
                     </motion.div>
                   )}
-              </AnimatePresence>
-            </motion.div>
-          ))}
+                </AnimatePresence>
+              </div>
+            );
+          })}
         </div>
       )}
     </motion.div>
