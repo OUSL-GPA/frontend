@@ -7,6 +7,8 @@ import "./Dashboard.css";
 import OUSLCard from "../OUSLCard";
 import defaultProfile from "../../assets/default-Profile.png";
 import { AuthContext } from "../../context/AuthContext";
+import { IoNotifications } from "react-icons/io5";
+
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -133,6 +135,8 @@ const Dashboard = () => {
       <div className="dashboard-header">
         <OUSLCard />
         <div className="header-right">
+          
+          <IoNotifications className="notify-button" onClick={() => toast.info('Coming soon!')}/>
           <div className="profile-section">
             <motion.div
               className="profile-image-container"
