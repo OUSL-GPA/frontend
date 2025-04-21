@@ -12,12 +12,14 @@ import MyGrades from "./components/MyGrades/MyGrades";
 import Footer from "./components/Footer/Footer";
 import Discussions from "./components/Discussions/Discussions";
 import Requirement from "./components/Requirement/Requirement";
+import VerifyEmail from './components/VerifyEmail/VerifyEmail';
 
 function App() {
   return (
     <div className="App">
       <Routes>
         <Route path="/sign" element={<Sign />} />
+        <Route path="/verify-email" element={<VerifyEmail />} />
         <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>}/>
         <Route path="/" element={<Sign />} />
         <Route path="/profile" element={<Profile />} />
