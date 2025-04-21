@@ -285,14 +285,14 @@ const Sign = () => {
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.4 }}
               >
-                <button 
+                {/* <button 
                   type="button" 
                   disabled
                   className="text-link"
                   onClick={() => navigate('/forgot-password')}
                 >
                   Forgot Password?
-                </button>
+                </button> */}
               </motion.div>
             )}
           </motion.div>

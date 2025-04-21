@@ -36,7 +36,7 @@ function OUSLCard() {
   // Inline styles
   const styles = {
     card: {
-      maxWidth: '500px',
+      maxWidth: '430px',
       borderRadius: '12px',
       overflow: 'hidden',
       padding: '20px',

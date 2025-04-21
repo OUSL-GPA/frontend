@@ -136,7 +136,7 @@ const Dashboard = () => {
         <OUSLCard />
         <div className="header-right">
           
-          <IoNotifications className="notify-button" onClick={() => toast.info('Coming soon!')}/>
+          {/* <IoNotifications className="notify-button" onClick={() => toast.info('Coming soon!')}/> */}
           <div className="profile-section">
             <motion.div
               className="profile-image-container"
