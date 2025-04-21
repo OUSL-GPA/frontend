@@ -97,9 +97,9 @@ const Discussions = () => {
         discussions.map((discussion) =>
           discussion._id === discussionId
             ? {
-                ...discussion,
-                replies: [...discussion.replies, response.data],
-              }
+              ...discussion,
+              replies: [...discussion.replies, response.data],
+            }
             : discussion
         )
       );
@@ -135,20 +135,20 @@ const Discussions = () => {
   const formatDayHeader = (dateString) => {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
-    
+
     const date = getLocalDate(dateString);
     date.setHours(0, 0, 0, 0);
-    
+
     if (date.getTime() === today.getTime()) {
       return "Today";
     }
-    
+
     const yesterday = new Date(today);
     yesterday.setDate(yesterday.getDate() - 1);
     if (date.getTime() === yesterday.getTime()) {
       return "Yesterday";
     }
-    
+
     const options = { weekday: "long", year: "numeric", month: "long", day: "numeric" };
     return date.toLocaleDateString(undefined, options);
   };
@@ -156,25 +156,25 @@ const Discussions = () => {
   const groupDiscussionsByDay = () => {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
-    
+
     const grouped = {};
-    
+
     discussions.forEach((discussion) => {
       const localDate = getLocalDate(discussion.createdAt);
       localDate.setHours(0, 0, 0, 0);
-      
+
       const dateKey = localDate.toISOString().split("T")[0];
-      
+
       if (!grouped[dateKey]) {
         grouped[dateKey] = [];
       }
-      
+
       grouped[dateKey].push(discussion);
     });
-    
+
     // Sort days in descending order
     const sortedDays = Object.keys(grouped).sort((a, b) => new Date(b) - new Date(a));
-    
+
     return { grouped, sortedDays };
   };
 
@@ -353,12 +353,11 @@ const Discussions = () => {
                       {dayDiscussions.map((discussion) => (
                         <motion.div
                           key={discussion._id}
-                          className={`discussion-card ${
-                            selectedDiscussion &&
-                            selectedDiscussion._id === discussion._id
+                          className={`discussion-card ${selectedDiscussion &&
+                              selectedDiscussion._id === discussion._id
                               ? "selected"
                               : ""
-                          }`}
+                            }`}
                           initial={{ opacity: 0, y: 20 }}
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ duration: 0.3 }}
@@ -394,10 +393,17 @@ const Discussions = () => {
                                 </span>
                               </div>
                             </div>
+                            <div className="course-and-reply">
                             <div className="discussion-meta">
-                              <span className="discussion-course">
-                                {discussion.course}
+                              <span className="discussion-course1">
+                                <b>Purpose- </b>{discussion.course}
                               </span>
+                            </div>
+                            <div className="discussion-meta">
+                              <span className="discussion-course2">
+                                <b>Send a reply</b>
+                              </span>
+                            </div>
                             </div>
                           </div>
                           <div
