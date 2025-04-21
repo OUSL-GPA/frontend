@@ -6,7 +6,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './Sign.css';
 import OUSLCard from '../OUSLCard';
-import { AuthContext } from '../../context/AuthContext'; // Adjust the path as needed
+import { AuthContext } from '../../context/AuthContext';
 
 const Sign = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -14,6 +14,7 @@ const Sign = () => {
     name: '',
     email: '',
     password: '',
+    confirmPassword: '',
     studentId: ''
   });
   const [error, setError] = useState('');
@@ -22,74 +23,95 @@ const Sign = () => {
   const { dispatch } = useContext(AuthContext);
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    // Automatically add 'S' prefix for student ID if it's not there
+    if (e.target.name === 'studentId') {
+      let value = e.target.value.replace(/[^0-9]/g, '');
+      if (value && !value.startsWith('S')) {
+        value = `S${value}`;
+      }
+      setFormData({ ...formData, [e.target.name]: value });
+    } else {
+      setFormData({ ...formData, [e.target.name]: e.target.value });
+    }
+  };
+
+  const validateForm = () => {
+    if (!isLogin) {
+      if (formData.password !== formData.confirmPassword) {
+        setError('Passwords do not match');
+        return false;
+      }
+      if (formData.password.length < 6) {
+        setError('Password must be at least 6 characters');
+        return false;
+      }
+    }
+    return true;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
 
+    if (!isLogin && !validateForm()) {
+      return;
+    }
+
     try {
       dispatch({ type: "LOGIN_START" });
 
-      const endpoint = isLogin ? '/api/auth/login' : '/api/auth/register';
-      const payload = isLogin 
-        ? { email: formData.email, password: formData.password }
-        : formData;
-
-      const response = await axios.post(endpoint, payload);
-      
       if (isLogin) {
+        const response = await axios.post('/api/auth/login', {
+          email: formData.email,
+          password: formData.password
+        });
+        
+        // Check if user is verified
+        if (!response.data.user.isVerified) {
+          throw new Error('Please verify your email first. Check your inbox for the verification link.');
+        }
+        
         dispatch({ type: "LOGIN_SUCCESS", payload: response.data.user });
         localStorage.setItem('studentToken', response.data.token);
         
         toast.success('Login successful! Redirecting...', {
           position: "top-right",
           autoClose: 2000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
         });
 
         setTimeout(() => {
           navigate('/dashboard');
         }, 1000);
       } else {
-        toast.success('Registration successful! Please login.', {
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
+        // Registration flow
+        await axios.post('/api/auth/register', {
+          name: formData.name,
+          email: formData.email,
+          password: formData.password,
+          studentId: formData.studentId
         });
-
-        // After registration, switch to login form
-        setTimeout(() => {
-          setIsLogin(true);
-          setFormData({
-            name: '',
-            email: '',
-            password: '',
-            studentId: ''
-          });
-        }, 1000);
+        
+        toast.success('Verification email sent! Please check your email to complete registration.', {
+          position: "top-right",
+          autoClose: 5000,
+        });
+        
+        // Clear form and switch to login view
+        setFormData({
+          name: '',
+          email: '',
+          password: '',
+          confirmPassword: '',
+          studentId: ''
+        });
+        setIsLogin(true);
       }
-      
     } catch (err) {
-      dispatch({ type: "LOGIN_FAILURE", payload: err.response?.data?.message || 'Something went wrong' });
-      setError(err.response?.data?.message || 'Something went wrong');
-      toast.error(err.response?.data?.message || 'Something went wrong', {
+      dispatch({ type: "LOGIN_FAILURE", payload: err.response?.data?.message || err.message || 'Something went wrong' });
+      setError(err.response?.data?.message || err.message || 'Something went wrong');
+      toast.error(err.response?.data?.message || err.message || 'Something went wrong', {
         position: "top-right",
         autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
       });
     }
   };
@@ -98,6 +120,7 @@ const Sign = () => {
     if (!isAnimating) {
       setIsAnimating(true);
       setIsLogin(!isLogin);
+      setError('');
       setTimeout(() => setIsAnimating(false), 500);
     }
   };
@@ -106,6 +129,7 @@ const Sign = () => {
     <div className="sign-container">
       <ToastContainer />
       <OUSLCard />
+      
       <motion.div 
         className="sign-form"
         initial={{ opacity: 0, y: 20 }}
@@ -152,39 +176,42 @@ const Sign = () => {
 
             <form onSubmit={handleSubmit}>
               {!isLogin && (
-                <motion.div
-                  className="form-group"
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.1 }}
-                >
-                  <label>User Name</label>
-                  <input
-                    type="text"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleChange}
-                    required
-                  />
-                </motion.div>
-              )}
+                <>
+                  <motion.div
+                    className="form-group"
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.1 }}
+                  >
+                    <label>Full Name</label>
+                    <input
+                      type="text"
+                      name="name"
+                      value={formData.name}
+                      onChange={handleChange}
+                      required
+                    />
+                  </motion.div>
 
-              {!isLogin && (
-                <motion.div
-                  className="form-group"
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.2 }}
-                >
-                  <label>Student ID</label>
-                  <input
-                    type="text"
-                    name="studentId"
-                    value={`S${formData.studentId.replace(/[^0-9]/g, '')}`}
-                    onChange={handleChange}
-                    required
-                  />
-                </motion.div>
+                  <motion.div
+                    className="form-group"
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.2 }}
+                  >
+                    <label>Student ID</label>
+                    <input
+                      type="text"
+                      name="studentId"
+                      value={formData.studentId}
+                      onChange={handleChange}
+                      placeholder='Numbers only'
+                      required
+                      pattern="S\d+"
+                      title="Student ID must start with 'S' followed by numbers"
+                    />
+                  </motion.div>
+                </>
               )}
 
               <motion.div
@@ -220,16 +247,53 @@ const Sign = () => {
                 />
               </motion.div>
 
+              {!isLogin && (
+                <>
+                  <motion.div
+                    className="form-group"
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.5 }}
+                  >
+                    <label>Confirm Password</label>
+                    <input
+                      type="password"
+                      name="confirmPassword"
+                      value={formData.confirmPassword}
+                      onChange={handleChange}
+                      required
+                    />
+                  </motion.div>
+                </>
+              )}
+
               <motion.button
                 type="submit"
                 className="submit-btn"
                 whileTap={{ scale: 0.98 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: isLogin ? 0.2 : 0.3 }}
+                whileHover={{ scale: 1.02 }}
+                transition={{ delay: isLogin ? 0.3 : 0.6 }}
               >
                 {isLogin ? 'Sign In' : 'Sign Up'}
               </motion.button>
             </form>
+
+            {isLogin && (
+              <motion.div
+                className="forgot-password"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.4 }}
+              >
+                <button 
+                  type="button" 
+                  className="text-link"
+                  onClick={() => navigate('/forgot-password')}
+                >
+                  Forgot Password?
+                </button>
+              </motion.div>
+            )}
           </motion.div>
         </AnimatePresence>
       </motion.div>
