@@ -68,7 +68,7 @@ const Sign = () => {
         
         // Check if user is verified
         if (!response.data.user.isVerified) {
-          throw new Error('Please verify your email first. Check your inbox for the verification link.');
+          throw new Error('Please verify your email first. Check your inbox or spam.');
         }
         
         dispatch({ type: "LOGIN_SUCCESS", payload: response.data.user });
@@ -287,6 +287,7 @@ const Sign = () => {
               >
                 <button 
                   type="button" 
+                  disabled
                   className="text-link"
                   onClick={() => navigate('/forgot-password')}
                 >
