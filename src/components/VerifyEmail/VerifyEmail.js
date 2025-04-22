@@ -37,7 +37,7 @@ const VerifyEmail = () => {
                 });
 
                 setTimeout(() => {
-                    navigate('/dashboard');
+                    navigate('/sign');
                 }, 2000);
             } catch (err) {
                 toast.error(err.response?.data?.message || 'Verification failed', {
@@ -57,7 +57,7 @@ const VerifyEmail = () => {
     return (
         <div className="verify-email-container">
             {isLoading ? (
-                <div className="loading-spinner">Verifying your email...</div>
+                <div className="loading-spinner"></div>
             ) : isSuccess ? (
                 <div className="success-message">
                     <h2>Email Verified Successfully!</h2>

@@ -7,7 +7,7 @@ import "./Dashboard.css";
 import OUSLCard from "../OUSLCard";
 import defaultProfile from "../../assets/default-Profile.png";
 import { AuthContext } from "../../context/AuthContext";
-import { IoNotifications } from "react-icons/io5";
+
 
 
 const Dashboard = () => {
@@ -208,7 +208,7 @@ const Dashboard = () => {
                   data-classification={getClassification(gpa)}
                 >
                   {gpaLoading ? (
-                    <div className="gpa-loading">Calculating...</div>
+                    <div className="gpa-loading"><div className="loading-spinner"></div>Calculating...</div>
                   ) : gpa !== null ? (
                     <>
                       <span className="gpa-number">{gpa}</span>

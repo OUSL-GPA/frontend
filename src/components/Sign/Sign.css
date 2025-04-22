@@ -67,6 +67,12 @@
   border-radius: 3px;
 }
 
+.toggle-btn:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+
 .form-group {
   margin-bottom: 1rem;
   position: relative;
