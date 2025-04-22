@@ -24,16 +24,16 @@ table {
 }
 
 th, td {
-  padding: 12px 8px;
+  padding: 5px 8px;
   text-align: center;
   border-bottom: 1px solid #e0e0e0;
 }
 
-#course-name {
+/* #course-name {
   text-align: left;
   max-width: 150px;
   word-break: break-word;
-}
+} */
 
 th {
   background-color: #f0f0f0;
@@ -110,6 +110,40 @@ tr:hover {
 
 .action-edit-cancel-btn:hover {
   background-color: #cc0000;
+  transform: translateY(-1px);
+}
+
+.action-btn-set-elective {
+  background-color: #ff9800;
+  color: white;
+  margin: 0.3rem;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.85rem;
+}
+
+.action-btn-set-elective:hover {
+  background-color: #f57c00;
+  transform: translateY(-1px);
+}
+
+.action-btn-set-compulsory {
+  background-color: #2196f3;
+  color: white;
+  margin: 0.3rem;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.85rem;
+}
+
+.action-btn-set-compulsory:hover {
+  background-color: #1976d2;
   transform: translateY(-1px);
 }
 
@@ -235,7 +269,7 @@ tr:hover {
     max-width: 160px;
   }
 
-  #action-buttons{
+  #action-buttons {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -245,7 +279,9 @@ tr:hover {
   .action-btn-delete,
   .action-btn-edit,
   .action-edit-save-btn,
-  .action-edit-cancel-btn {
+  .action-edit-cancel-btn,
+  .action-btn-set-elective,
+  .action-btn-set-compulsory {
     padding: 4px 5px;
     font-size: 0.8rem;
     margin: 0.2rem;
@@ -277,11 +313,11 @@ tr:hover {
 }
 
 @media (max-width: 835px) {
-  #grade-column{
+  #grade-column {
     display: flex;
     flex-direction: column;
   }
-  #action-column{
+  #action-column {
     display: none;
   }
 }
@@ -336,6 +372,8 @@ button:focus {
 .action-btn-edit:active,
 .action-btn-delete:active,
 .action-edit-save-btn:active,
-.action-edit-cancel-btn:active {
+.action-edit-cancel-btn:active,
+.action-btn-set-elective:active,
+.action-btn-set-compulsory:active {
   animation: buttonPulse 0.3s ease;
 }

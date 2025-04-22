@@ -86,6 +86,25 @@ const MyGrades = () => {
     }
   };
 
+  const handleUpdateCourseType = async (courseId, newType) => {
+    try {
+      await axios.put(
+        `/api/courses/${courseId}/update-type`,
+        { courseType: newType },
+        {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        }
+      );
+      setCourses(
+        courses.map((course) =>
+          course._id === courseId ? { ...course, courseType: newType } : course
+        )
+      );
+    } catch (err) {
+      setError(err.response?.data?.message || "Failed to update course type");
+    }
+  };
+
   const openDeleteModal = (courseId) => {
     setCourseToDelete(courseId);
     setIsModalOpen(true);
@@ -203,6 +222,21 @@ const MyGrades = () => {
                                       >
                                         Delete
                                       </button>
+                                      {course.courseType === "compulsory" ? (
+                                        <button
+                                          className="action-btn-set-elective"
+                                          onClick={() => handleUpdateCourseType(course._id, "elective")}
+                                        >
+                                          Set as Elective
+                                        </button>
+                                      ) : (
+                                        <button
+                                          className="action-btn-set-compulsory"
+                                          onClick={() => handleUpdateCourseType(course._id, "compulsory")}
+                                        >
+                                          Set as Compulsory
+                                        </button>
+                                      )}
                                     </td>
                                   </tr>
                                 ))}
