@@ -6,6 +6,7 @@ import { AuthContext } from "../../context/AuthContext";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { IoReturnUpBack } from "react-icons/io5";
+import { FaFileImport } from "react-icons/fa";
 
 const AddCourse = () => {
   const [courses, setCourses] = useState([]);
@@ -13,10 +14,11 @@ const AddCourse = () => {
   const [activeType, setActiveType] = useState("compulsory");
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
+  const [importFile, setImportFile] = useState(null);
+  const [isImporting, setIsImporting] = useState(false);
 
   const userId = user.id;
 
-  // Form state for new course
   const [newCourse, setNewCourse] = useState({
     courseCode: "",
     courseName: "",
@@ -24,18 +26,15 @@ const AddCourse = () => {
     courseType: activeType,
   });
 
-  // Handle input changes for new course
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setNewCourse((prev) => ({
       ...prev,
       [name]: value,
-      courseType: activeType, // Ensure courseType is always set to the active type
-      level: activeLevel, // Ensure level is always set to the active level
+      courseType: activeType,
     }));
   };
 
-  // Add a new course
   const handleAddCourse = async (e) => {
     e.preventDefault();
     try {
@@ -61,39 +60,93 @@ const AddCourse = () => {
       toast.success("Successfully course added", {
         position: "top-right",
         autoClose: 2500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
       });
-      setActiveLevel(3); // Reset to default level
-      setActiveType("compulsory"); // Reset to default type
+      setActiveLevel(3);
+      setActiveType("compulsory");
     } catch (error) {
       console.error("Error adding course:", error);
       toast.error(error.response?.data?.error || "Failed to add course", {
         position: "top-right",
         autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
       });
-      setActiveLevel(3); // Reset to default level
-      setActiveType("compulsory"); // Reset to default type
     }
   };
 
- 
-  // Filter courses by level and type
+  const handleFileImport = async (e) => {
+    e.preventDefault();
+    if (!importFile) {
+      toast.error("Please select a file first", {
+        position: "top-right",
+        autoClose: 3000,
+      });
+      return;
+    }
+
+    setIsImporting(true);
+    const formData = new FormData();
+    formData.append('file', importFile);
+
+    try {
+      const response = await axios.post(
+        `/api/courses/${userId}/import`,
+        formData,
+        {
+          headers: { 
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            'Content-Type': 'multipart/form-data'
+          }
+        }
+      );
+
+      toast.success(response.data.message, {
+        position: "top-right",
+        autoClose: 3000,
+      });
+      
+      // Refresh courses - you might need to implement this
+      setImportFile(null);
+    } catch (error) {
+      console.error("Import error:", error);
+      toast.error(error.response?.data?.error || "Failed to import courses", {
+        position: "top-right",
+        autoClose: 3000,
+      });
+    } finally {
+      setIsImporting(false);
+    }
+  };
+
   const filteredCourses = courses.filter(
     (course) => course.level === activeLevel && course.courseType === activeType
   );
 
   return (
     <div className="course-container">
-       <button className="back-btn" onClick={() => navigate(-1)}><IoReturnUpBack/></button>
+      <button className="back-btn" onClick={() => navigate(-1)}><IoReturnUpBack/></button>
       <h1>Add Course & Grades</h1>
-     
+
+      <div className="import-section">
+        <h3>Import Courses from Excel</h3>
+        <form onSubmit={handleFileImport}>
+          <div className="form-group">
+            <label>Select Excel File:</label>
+            <input 
+              type="file" 
+              accept=".xlsx, .xls"
+              onChange={(e) => setImportFile(e.target.files[0])}
+              required
+            />
+            <small>Results data file can be downloaded form here: <a href="http://myousl.ou.ac.lk" target="blank">My OUSL</a></small>
+          </div>
+          <button 
+            type="submit" 
+            className="import-btn"
+            disabled={isImporting}
+          >
+            <FaFileImport /> {isImporting ? 'Importing...' : 'Import Courses'}
+          </button>
+        </form>
+      </div>
 
       <div className="level-tabs">
         {[3, 4, 5, 6].map((level) => (
@@ -122,7 +175,7 @@ const AddCourse = () => {
       <div className="course-form">
         <h3>
           Add New Course (Level {activeLevel} - {activeType})
-          <span> imporant!</span>
+          <span> important!</span>
         </h3>
         <form onSubmit={handleAddCourse}>
           <div className="form-group">
