@@ -24,6 +24,7 @@ h1 {
   color: #2c3e50;
   margin-bottom: 30px;
   font-size: 2rem;
+  text-align: center;
 }
 
 .status-banner {
@@ -51,6 +52,7 @@ h1 {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
   gap: 25px;
+  margin-top: 20px;
 }
 
 .requirement-card {
@@ -60,6 +62,9 @@ h1 {
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   position: relative;
   border-left: 5px solid;
+  min-height: 220px;
+  display: flex;
+  flex-direction: column;
 }
 
 .requirement-card.met {
@@ -74,6 +79,7 @@ h1 {
   margin-top: 0;
   color: #2c3e50;
   font-size: 1.2rem;
+  margin-bottom: 15px;
 }
 
 .progress-container {
@@ -107,11 +113,14 @@ h1 {
 .progress-text {
   font-weight: bold;
   font-size: 0.9rem;
+  min-width: 40px;
+  text-align: right;
 }
 
 .details {
   font-size: 0.95rem;
   line-height: 1.6;
+  flex-grow: 1;
 }
 
 .details p {
@@ -121,10 +130,18 @@ h1 {
 .additional-requirement {
   color: #6c757d;
   font-size: 0.9rem;
+  margin-left: 10px;
+  padding-left: 10px;
+  border-left: 2px solid #dee2e6;
 }
 
 .remaining {
   color: #dc3545;
+  font-weight: bold;
+}
+
+.exceeded {
+  color: #ffc107;
   font-weight: bold;
 }
 
@@ -174,4 +191,18 @@ h1 {
 
 .error-container button:hover {
   background-color: #0069d9;
+}
+
+@media (max-width: 768px) {
+  .requirements-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .eligibility-container {
+    padding: 15px;
+  }
+  
+  h1 {
+    font-size: 1.5rem;
+  }
 }
