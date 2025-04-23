@@ -74,13 +74,14 @@ const DegreeEligibility = () => {
           min={eligibility.requirements.industrial.min}
           max={eligibility.requirements.industrial.max}
           remaining={eligibility.requirements.industrial.remaining}
+          exceeded={eligibility.requirements.industrial.exceeded}
         />
 
         <RequirementCard
           title="Engineering (X)"
           met={eligibility.requirements.engineering.met}
           current={eligibility.requirements.engineering.current}
-          min={eligibility.requirements.engineering.min}
+          min="30 (Level 5/6)"
           additional={[
             `Level 5/6: ${eligibility.requirements.engineering.level5_6}/30`,
             `Level 6: ${eligibility.requirements.engineering.level6}/15`,
@@ -89,6 +90,16 @@ const DegreeEligibility = () => {
             eligibility.requirements.engineering.remainingLevel5_6,
             eligibility.requirements.engineering.remainingLevel6
           )}
+        />
+
+        <RequirementCard
+          title="General (J)"
+          met={eligibility.requirements.general.met}
+          current={eligibility.requirements.general.current}
+          min={eligibility.requirements.general.min}
+          max={eligibility.requirements.general.max}
+          remaining={eligibility.requirements.general.remaining}
+          exceeded={eligibility.requirements.general.exceeded}
         />
 
         <RequirementCard
@@ -164,21 +175,26 @@ const RequirementCard = ({
   max,
   additional,
   remaining,
+  exceeded,
 }) => {
-  const progressPercent = Math.min(100, (current / min) * 100);
+  const showProgressBar = typeof min === 'number';
+  const progressPercent = showProgressBar ? Math.min(100, (current / min) * 100) : 0;
 
   return (
     <div className={`requirement-card ${met ? "met" : "not-met"}`}>
       <h3>{title}</h3>
-      <div className="progress-container">
-        <div className="progress-bar">
-          <div
-            className="progress-fill"
-            style={{ width: `${progressPercent}%` }}
-          ></div>
+      
+      {showProgressBar && (
+        <div className="progress-container">
+          <div className="progress-bar">
+            <div
+              className="progress-fill"
+              style={{ width: `${progressPercent}%` }}
+            ></div>
+          </div>
+          <span className="progress-text">{Math.round(progressPercent)}%</span>
         </div>
-        <span className="progress-text">{Math.round(progressPercent)}%</span>
-      </div>
+      )}
       
       <div className="details">
         <p>
@@ -198,6 +214,12 @@ const RequirementCard = ({
         {remaining > 0 && (
           <p className="remaining">
             <strong>Remaining:</strong> {remaining} credits
+          </p>
+        )}
+        
+        {exceeded > 0 && (
+          <p className="exceeded">
+            <strong>Exceeded by:</strong> {exceeded} credits
           </p>
         )}
       </div>
