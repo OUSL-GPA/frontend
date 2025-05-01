@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
 import "./Requirement.css";
 import { IoReturnUpBack } from "react-icons/io5";
+import PropTypes from 'prop-types';
 
 const DegreeEligibility = () => {
   const navigate = useNavigate();
@@ -14,17 +15,25 @@ const DegreeEligibility = () => {
 
   const fetchEligibility = async () => {
     try {
+      setLoading(true);
+      setError(null);
+
       const response = await axios.get(`/api/courses/${user.id}/eligibility`, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       });
+
+      if (!response.data?.requirements) {
+        throw new Error("Invalid data structure received from server");
+      }
+
       setEligibility(response.data);
-      setError(null);
     } catch (err) {
       console.error("Eligibility check error:", err);
       setError(
         err.response?.data?.error ||
-          err.response?.data?.message ||
-          "Failed to check eligibility"
+        err.response?.data?.message ||
+        err.message ||
+        "Failed to check eligibility"
       );
     } finally {
       setLoading(false);
@@ -36,19 +45,40 @@ const DegreeEligibility = () => {
   }, [user.id]);
 
   const handleRefresh = () => {
-    setLoading(true);
     fetchEligibility();
   };
 
-  if (loading) return <div className="loading">Loading eligibility data...</div>;
-  if (error)
+  if (loading) {
     return (
-      <div className="error-container">
-        <p>Error: {error}</p>
-        <button onClick={handleRefresh}>Try Again</button>
+      <div className="loading-container">
+        <div className="loading-spinner"></div>
+        <p>Loading eligibility data...</p>
       </div>
     );
-  if (!eligibility) return <div>No eligibility data found</div>;
+  }
+
+  if (error) {
+    return (
+      <div className="error-container">
+        <div className="error-icon">⚠️</div>
+        <p className="error-message">{error}</p>
+        <button className="refresh-button" onClick={handleRefresh}>
+          Try Again
+        </button>
+      </div>
+    );
+  }
+
+  if (!eligibility) {
+    return (
+      <div className="no-data-container">
+        <p>No eligibility data found</p>
+        <button className="refresh-button" onClick={handleRefresh}>
+          Refresh
+        </button>
+      </div>
+    );
+  }
 
   return (
     <div className="eligibility-container">
@@ -60,35 +90,33 @@ const DegreeEligibility = () => {
 
       <div className={`status-banner ${eligibility.allRequirementsMet ? "met" : "not-met"}`}>
         {eligibility.allRequirementsMet ? (
-          <p>✅ All requirements met for degree award!</p>
+          <>
+            <div className="status-icon">✅</div>
+            <p>All requirements met for degree award!</p>
+          </>
         ) : (
-          <p>⚠️ Not all requirements are met yet</p>
+          <>
+            <div className="status-icon">⚠️</div>
+            <p>Not all requirements are met yet</p>
+          </>
         )}
       </div>
 
       <div className="requirements-grid">
-        <RequirementCard
-          title="Industrial (I)"
-          met={eligibility.requirements.industrial.met}
-          current={eligibility.requirements.industrial.current}
-          min={eligibility.requirements.industrial.min}
-          max={eligibility.requirements.industrial.max}
-          remaining={eligibility.requirements.industrial.remaining}
-          exceeded={eligibility.requirements.industrial.exceeded}
-        />
 
         <RequirementCard
-          title="Engineering (X)"
-          met={eligibility.requirements.engineering.met}
-          current={eligibility.requirements.engineering.current}
-          min="30 (Level 5/6)"
+          title="Industrial (I) & Engineering (X)"
+          met={eligibility.requirements.combined.met}
+          current={eligibility.requirements.combined.current}
+          min="65 (Total)"
           additional={[
-            `Level 5/6: ${eligibility.requirements.engineering.level5_6}/30`,
-            `Level 6: ${eligibility.requirements.engineering.level6}/15`,
+            `Level 5/6: ${eligibility.requirements.combined.currentLevel5_6}/30`,
+            `Level 6: ${eligibility.requirements.combined.currentLevel6}/15`,
           ]}
           remaining={Math.max(
-            eligibility.requirements.engineering.remainingLevel5_6,
-            eligibility.requirements.engineering.remainingLevel6
+            eligibility.requirements.combined.remainingCredits,
+            eligibility.requirements.combined.remainingLevel5_6,
+            eligibility.requirements.combined.remainingLevel6
           )}
         />
 
@@ -109,11 +137,11 @@ const DegreeEligibility = () => {
           min={eligibility.requirements.management.min}
           max={eligibility.requirements.management.max}
           additional={[
-            `Level 5+: ${eligibility.requirements.management.level5}/12`,
+            `Level 5+: ${eligibility.requirements.management.level5 || 0}/${eligibility.requirements.management.minLevel5}`
           ]}
           remaining={Math.max(
-            eligibility.requirements.management.remaining,
-            eligibility.requirements.management.remainingLevel5
+            eligibility.requirements.management.remaining || 0,
+            eligibility.requirements.management.remainingLevel5 || 0
           )}
         />
 
@@ -124,11 +152,11 @@ const DegreeEligibility = () => {
           min={eligibility.requirements.mathematics.min}
           max={eligibility.requirements.mathematics.max}
           additional={[
-            `Level 5+: ${eligibility.requirements.mathematics.level5}/3`,
+            `Level 5+: ${eligibility.requirements.mathematics.level5 || 0}/3`
           ]}
           remaining={Math.max(
-            eligibility.requirements.mathematics.remaining,
-            eligibility.requirements.mathematics.remainingLevel5
+            eligibility.requirements.mathematics.remaining || 0,
+            eligibility.requirements.mathematics.remainingLevel5 || 0
           )}
         />
 
@@ -139,11 +167,11 @@ const DegreeEligibility = () => {
           min={eligibility.requirements.project.min}
           max={eligibility.requirements.project.max}
           additional={[
-            `Level 6: ${eligibility.requirements.project.level6}/6`,
+            `Level 6: ${eligibility.requirements.project.level6 || 0}/6`
           ]}
           remaining={Math.max(
-            eligibility.requirements.project.remaining,
-            eligibility.requirements.project.remainingLevel6
+            eligibility.requirements.project.remaining || 0,
+            eligibility.requirements.project.remainingLevel6 || 0
           )}
         />
 
@@ -157,9 +185,9 @@ const DegreeEligibility = () => {
             `Level 6: ${eligibility.requirements.total.level6}/30`,
           ]}
           remaining={Math.max(
-            eligibility.requirements.total.remaining,
-            eligibility.requirements.total.remainingLevel5_6,
-            eligibility.requirements.total.remainingLevel6
+            eligibility.requirements.total.remaining || 0,
+            eligibility.requirements.total.remainingLevel5_6 || 0,
+            eligibility.requirements.total.remainingLevel6 || 0
           )}
         />
       </div>
@@ -177,56 +205,67 @@ const RequirementCard = ({
   remaining,
   exceeded,
 }) => {
-  const showProgressBar = typeof min === 'number';
-  const progressPercent = showProgressBar ? Math.min(100, (current / min) * 100) : 0;
+
 
   return (
     <div className={`requirement-card ${met ? "met" : "not-met"}`}>
-      <h3>{title}</h3>
-      
-      {showProgressBar && (
-        <div className="progress-container">
-          <div className="progress-bar">
-            <div
-              className="progress-fill"
-              style={{ width: `${progressPercent}%` }}
-            ></div>
-          </div>
-          <span className="progress-text">{Math.round(progressPercent)}%</span>
+      <div className="card-header">
+        <h3>{title}</h3>
+        <div className={`status-icon ${met ? "met" : "not-met"}`}>
+          {met ? "✓" : "✗"}
         </div>
-      )}
+      </div>
+
       
+
       <div className="details">
-        <p>
-          <strong>Current:</strong> {current} credits
-        </p>
-        <p>
-          <strong>Requirement:</strong> {min}
-          {max ? `-${max}` : "+"} credits
-        </p>
-        
+        <div className="detail-row">
+          <span className="detail-label">Current:</span>
+          <span className="detail-value">{current} credits</span>
+        </div>
+
+        <div className="detail-row">
+          <span className="detail-label">Requirement:</span>
+          <span className="detail-value">
+            {min}
+            {max ? `-${max}` : "+"} credits
+          </span>
+        </div>
+
         {additional?.map((item, i) => (
-          <p key={i} className="additional-requirement">
-            {item}
-          </p>
+          <div key={i} className="detail-row additional-requirement">
+            <span className="detail-label"></span>
+            <span className="detail-value">{item}</span>
+          </div>
         ))}
-        
+
         {remaining > 0 && (
-          <p className="remaining">
-            <strong>Remaining:</strong> {remaining} credits
-          </p>
+          <div className="detail-row remaining">
+            <span className="detail-label">Remaining:</span>
+            <span className="detail-value">{remaining} credits</span>
+          </div>
         )}
-        
+
         {exceeded > 0 && (
-          <p className="exceeded">
-            <strong>Exceeded by:</strong> {exceeded} credits
-          </p>
+          <div className="detail-row exceeded">
+            <span className="detail-label">Exceeded by:</span>
+            <span className="detail-value">{exceeded} credits</span>
+          </div>
         )}
       </div>
-      
-      <div className="status-icon">{met ? "✓" : "✗"}</div>
     </div>
   );
+};
+
+RequirementCard.propTypes = {
+  title: PropTypes.string.isRequired,
+  met: PropTypes.bool.isRequired,
+  current: PropTypes.number.isRequired,
+  min: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
+  max: PropTypes.number,
+  additional: PropTypes.arrayOf(PropTypes.string),
+  remaining: PropTypes.number,
+  exceeded: PropTypes.number
 };
 
 export default DegreeEligibility;
