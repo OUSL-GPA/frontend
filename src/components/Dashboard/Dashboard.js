@@ -7,6 +7,7 @@ import "./Dashboard.css";
 import OUSLCard from "../OUSLCard";
 import defaultProfile from "../../assets/default-Profile.png";
 import { AuthContext } from "../../context/AuthContext";
+import { IoNotifications } from "react-icons/io5";
 
 
 
@@ -136,7 +137,7 @@ const Dashboard = () => {
         <OUSLCard />
         <div className="header-right">
           
-          {/* <IoNotifications className="notify-button" onClick={() => toast.info('Coming soon!')}/> */}
+          <IoNotifications className="notify-button" onClick={() => navigate("/discussions")}/>
           <div className="profile-section">
             <motion.div
               className="profile-image-container"
@@ -279,12 +280,12 @@ const Dashboard = () => {
             className="dashboard-card"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            onClick={() => navigate("/discussions")}
+            onClick={() => navigate("/credit-summary")}
           >
-            <div className="card-icon">🗓️</div>
-            <h3>Student Discussions</h3>
+            <div className="card-icon">📱</div>
+            <h3>Credit Summery</h3>
             <p>
-              Add here a Discussion Topics, Replies & engage with other users
+              Credit management and summarize
             </p>
           </motion.div>
         </div>

@@ -13,6 +13,7 @@ import Footer from "./components/Footer/Footer";
 import Discussions from "./components/Discussions/Discussions";
 import Requirement from "./components/Requirement/Requirement";
 import VerifyEmail from './components/VerifyEmail/VerifyEmail';
+import CreditSummary from './components/CreditSummery/CreditSummary';
 
 function App() {
   return (
@@ -34,6 +35,7 @@ function App() {
         />
         <Route path="/discussions" element={<Discussions />} />
         <Route path="/my-courses/:userId/eligibility" element={<Requirement />} />
+        <Route path="/credit-summary" element={<CreditSummary />} />
       </Routes>
       
       <ToastContainer />
