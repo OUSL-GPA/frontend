@@ -1,7 +1,7 @@
 /* Dashboard Container */
 .dashboard-container {
-  padding: 0rem 1rem;
-  max-width: 1200px;
+  padding: 2rem 1rem;
+  max-width: 80%;
   margin: 0 auto;
   max-height: 100vh;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -27,8 +27,8 @@
 }
 
 .profile-image-container {
-  width: 60px;
-  height: 60px;
+  width: 5rem;
+  height: 5rem;
   border-radius: 50%;
   overflow: hidden;
   border: 3px solid rgba(255, 255, 255, 0.8);
@@ -116,6 +116,7 @@
 .dashboard-content {
   display: flex;
   flex-direction: column;
+  margin: 2rem 0rem;
 }
 
 /* User Info Section */
@@ -129,12 +130,14 @@
 .left-side {
   background: white;
   border-radius: 12px;
+  font-size: larger;
   padding: 1.5rem;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .info-grid {
   display: grid;
+  font-size: large;
   grid-template-columns: 1fr;
   gap: 0.8rem;
 }
@@ -174,7 +177,7 @@
 }
 
 .gpa-header h3 {
-  font-size: 1.4rem;
+  font-size: 2rem;
   color: #2c3e50;
   margin: 0;
 }
@@ -183,7 +186,7 @@
   background: #3498db;
   color: white;
   border: none;
-  padding: 6px 12px;
+  padding: 12px 22px;
   border-radius: 6px;
   font-size: 0.9rem;
   cursor: pointer;
@@ -202,7 +205,7 @@
 }
 
 .gpa-value {
-  font-size: 3.5rem;
+  font-size: 4rem;
   font-weight: 700;
   text-align: center;
   margin: 20px 0;
@@ -234,7 +237,7 @@
 }
 
 .gpa-number {
-  font-size: 4rem;
+  font-size: 5rem;
 }
 
 .gpa-scale {
@@ -245,7 +248,7 @@
 
 .gpa-message {
   text-align: center;
-  font-size: 1.1rem;
+  font-size: 1.3rem;
   padding: 12px;
   border-radius: 8px;
   margin-top: 10px;
@@ -329,15 +332,15 @@
 /* Dashboard Cards */
 .dashboard-cards {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
   gap: 1.5rem;
-  margin-top: 0.5rem;
+  margin-top: 1.5rem;
 }
 
 .dashboard-card {
   background-color: white;
   border-radius: 10px;
-  padding: 1.5rem;
+  padding: 2rem;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
   cursor: pointer;
@@ -355,7 +358,7 @@
 .dashboard-card h3 {
   color: #2c3e50;
   margin: 0;
-  font-size: 1.2rem;
+  font-size: 1.5rem;
 }
 
 .dashboard-card p {
@@ -365,7 +368,7 @@
 }
 
 .card-icon {
-  font-size: 1.8rem;
+  font-size: 2.5rem;
   margin-bottom: 0.5rem;
 }
 
