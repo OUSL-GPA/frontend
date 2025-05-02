@@ -14,7 +14,7 @@ const CreditSummary = () => {
   const navigate = useNavigate();
   const [filters, setFilters] = useState({
     levels: [],
-    credits: '',
+    credits: null, // Changed from empty string to null
     categories: [],
     statuses: [],
     types: []
@@ -24,6 +24,11 @@ const CreditSummary = () => {
   const statusOptions = ['Pass', 'Pending', 'Resit', 'Repeat'].map(item => ({ value: item, label: item }));
   const typeOptions = ['compulsory', 'elective'].map(item => ({ value: item, label: item.charAt(0).toUpperCase() + item.slice(1) }));
   const levelOptions = ['3', '4', '5', '6'].map(item => ({ value: item, label: `Level ${item}` }));
+  // New credit options from 1 to 9
+  const creditOptions = Array.from({ length: 9 }, (_, i) => ({ 
+    value: (i + 1).toString(), 
+    label: (i + 1).toString() 
+  }));
 
   const fetchCreditSummary = async () => {
     try {
@@ -31,7 +36,7 @@ const CreditSummary = () => {
       const response = await axios.get(`/api/credit-summary/${user.id}`, {
         params: {
           levels: filters.levels.map(l => l.value).join(','),
-          credits: filters.credits,
+          credits: filters.credits ? filters.credits.value : '', // Updated to handle select object
           categories: filters.categories.map(c => c.value).join(','),
           statuses: filters.statuses.map(s => s.value).join(','),
           types: filters.types.map(t => t.value).join(',')
@@ -62,17 +67,17 @@ const CreditSummary = () => {
     }));
   };
 
-  const handleCreditInputChange = (e) => {
+  const handleCreditChange = (selectedOption) => {
     setFilters(prev => ({
       ...prev,
-      credits: e.target.value
+      credits: selectedOption
     }));
   };
 
   const resetFilters = () => {
     setFilters({
       levels: [],
-      credits: [],
+      credits: null, // Reset to null
       categories: [],
       statuses: [],
       types: []
@@ -81,9 +86,9 @@ const CreditSummary = () => {
 
   return (
     <div className="credit-summary-container">
-        <button className="back-btn" onClick={() => navigate(-1)}>
-                <IoReturnUpBack />
-              </button>
+      <button className="back-btn" onClick={() => navigate(-1)}>
+        <IoReturnUpBack />
+      </button>
       <h2>Credit Summary</h2>
       
       <div className="filter-section">
@@ -102,14 +107,14 @@ const CreditSummary = () => {
 
         <div className="filter-group">
           <h4>Credits</h4>
-          <input
-            type="number"
-            min="1"
-            max="9"
+          <Select
+            options={creditOptions}
             value={filters.credits}
-            onChange={handleCreditInputChange}
-            placeholder="Enter credit count"
-            className="credit-input"
+            onChange={handleCreditChange}
+            className="filter-select"
+            classNamePrefix="select"
+            placeholder="Select credit count..."
+            isClearable
           />
         </div>
 

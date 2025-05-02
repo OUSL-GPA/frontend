@@ -1,27 +1,32 @@
+/* Mobile-first base styles */
 .sign-container {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  height:98vh;
+  min-height: 100vh;
+  width: 100%;
+  padding: 1rem;
   box-sizing: border-box;
   background-image: url(../../../public/background.jpg);
   background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .sign-form {
   background: rgba(255, 255, 255, 0.95);
-  padding: 0rem 1.5rem;
+  padding: 1.5rem;
   border-radius: 16px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
   width: 100%;
-  max-width: 26.5rem;
-  backdrop-filter: blur(10px);
-  overflow: hidden;
+  max-width: 400px;
+  backdrop-filter: blur(5px);
   margin: 0.5rem 0;
 }
 
+/* Form header styles */
 .form-header {
   display: flex;
   margin-bottom: 1.5rem;
@@ -34,13 +39,13 @@
   bottom: 0;
   left: 0;
   width: 100%;
-  height: 2px;
+  height: 1px;
   background: linear-gradient(90deg, transparent, rgba(0, 0, 0, 0.1), transparent);
 }
 
 .toggle-btn {
   flex: 1;
-  padding: 0.75rem 0.5rem;
+  padding: 0.75rem;
   border: none;
   background: none;
   cursor: pointer;
@@ -49,7 +54,6 @@
   color: #666;
   transition: all 0.3s ease;
   position: relative;
-  z-index: 1;
 }
 
 .toggle-btn.active {
@@ -68,15 +72,9 @@
   border-radius: 3px;
 }
 
-.toggle-btn:focus {
-  outline: none;
-  box-shadow: none;
-}
-
-
+/* Form elements */
 .form-group {
-  margin-bottom: 1rem;
-  position: relative;
+  margin-bottom: 1.25rem;
 }
 
 .form-group label {
@@ -84,6 +82,7 @@
   font-weight: 500;
   color: #444;
   margin-bottom: 0.5rem;
+  font-size: 0.95rem;
 }
 
 .form-group input {
@@ -92,125 +91,87 @@
   border: 1px solid #ddd;
   border-radius: 8px;
   font-size: 1rem;
-  transition: all 0.3s;
-  background: rgba(255, 255, 255, 0.8);
+  transition: all 0.2s;
+  background: rgba(255, 255, 255, 0.9);
   box-sizing: border-box;
 }
 
 .form-group input:focus {
   outline: none;
-  box-shadow: 0 0 0 3px rgba(49, 130, 206, 0.2);
+  border-color: #ff4b2b;
+  box-shadow: 0 0 0 2px rgba(255, 75, 43, 0.2);
 }
 
+/* Error message */
 .error-message {
   color: #e53e3e;
   margin-bottom: 1rem;
-  text-align: center;
   padding: 0.75rem;
   background: rgba(229, 62, 62, 0.1);
   border-radius: 8px;
-  border-left: 4px solid #e53e3e;
+  border-left: 3px solid #e53e3e;
   font-size: 0.9rem;
+  text-align: center;
 }
 
+/* Submit button */
 .submit-btn {
   width: 100%;
   padding: 0.875rem;
-  margin-bottom: 1rem;
-  background: linear-gradient(135deg, rgba(255, 65, 108, 0.8), rgba(255, 75, 43, 0.8));
+  margin: 1rem 0;
+  background: linear-gradient(to right, #ff416c, #ff4b2b);
   color: white;
   border: none;
   border-radius: 8px;
   font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.4s;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  margin-top: 0.5rem;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .submit-btn:hover {
-  transform: translateY(-2px);
-  background: linear-gradient(135deg, rgba(255, 65, 108, 1), rgba(255, 75, 43, 1));
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
-/* Responsive adjustments */
-@media (max-width: 480px) {
-  .sign-form {
-      padding: 1.25rem;
-      margin: 0.5rem;
-  }
-  
-  .toggle-btn {
-      font-size: 0.95rem;
-      padding: 0.5rem 0.25rem;
-  }
-  
-  .form-group input {
-      padding: 0.65rem;
-  }
-  
-  .submit-btn {
-      padding: 0.75rem;
-  }
+/* Forgot password link */
+.forgot-password {
+  text-align: center;
+  margin-top: 1rem;
 }
 
-@media (max-width: 360px) {
-  .sign-form {
-      padding: 1rem;
-  }
-  
-  .toggle-btn {
-      font-size: 0.9rem;
-  }
-  
-  .form-header {
-      margin-bottom: 1rem;
-  }
+.forgot-password button {
+  background: none;
+  border: none;
+  color: #666;
+  text-decoration: underline;
+  cursor: pointer;
+  font-size: 0.9rem;
 }
 
-
-
-/* Reduced motion preference */
-@media (prefers-reduced-motion: reduce) {
-  .toggle-btn,
-  .submit-btn,
-  .form-group input {
-      transition: none;
-  }
-  
-  .submit-btn:hover {
-      transform: none;
-  }
-}
-
-
-/* Existing styles... */
-
-/* Add these new styles for OTP verification */
+/* OTP Verification styles */
 .otp-verification {
   background: white;
-  padding: 2rem;
+  padding: 1.5rem;
   border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  width: 100%;
   max-width: 400px;
-  margin: 2rem auto;
+  margin: 1rem auto;
   text-align: center;
 }
 
 .otp-verification h2 {
   margin-bottom: 1rem;
   color: #333;
+  font-size: 1.25rem;
 }
 
 .otp-verification p {
-  margin-bottom: 2rem;
-  color: #666;
-}
-
-.otp-verification .form-group {
   margin-bottom: 1.5rem;
+  color: #666;
+  font-size: 0.9rem;
 }
 
 .otp-verification input {
@@ -220,25 +181,62 @@
   border: 1px solid #ddd;
   border-radius: 4px;
   text-align: center;
-  letter-spacing: 0.5rem;
+  letter-spacing: 0.3rem;
+  margin-bottom: 1.5rem;
 }
 
-.otp-verification button {
-  background: #4CAF50;
-  color: white;
-  border: none;
-  padding: 0.8rem 1.5rem;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 1rem;
-  transition: background 0.3s;
+/* Responsive adjustments */
+@media (max-width: 480px) {
+  .sign-container {
+    padding: 1.2rem;
+  }
+  
+  .sign-form {
+    padding: 0.5rem;
+    border-radius: 12px;
+  }
+  
+  .toggle-btn {
+    padding: 0.5rem;
+    font-size: 0.95rem;
+  }
+  
+  .form-group input {
+    padding: 0.65rem;
+  }
+  
+  .submit-btn {
+    padding: 0.75rem;
+    font-size: 0.95rem;
+  }
 }
 
-.otp-verification button:hover {
-  background: #45a049;
+@media (max-width: 360px) {
+  .sign-form {
+    padding: 1rem;
+  }
+  
+  .toggle-btn {
+    font-size: 0.9rem;
+    padding: 0.5rem 0.25rem;
+  }
+  
+  .form-group label {
+    font-size: 0.9rem;
+  }
+  
+  .form-group input {
+    font-size: 0.9rem;
+    padding: 0.6rem;
+  }
 }
 
-.otp-verification button:disabled {
-  background: #cccccc;
-  cursor: not-allowed;
+/* Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

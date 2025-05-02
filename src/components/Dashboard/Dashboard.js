@@ -136,42 +136,43 @@ const Dashboard = () => {
       <div className="dashboard-header">
         <OUSLCard />
         <div className="header-right">
-          
-          <IoNotifications className="notify-button" onClick={() => navigate("/discussions")}/>
-          <div className="profile-section">
-            <motion.div
-              className="profile-image-container"
-              onClick={navigateToProfile}
+          <IoNotifications className="notify-button" onClick={() => navigate("/discussions")} />
+          <div className="profile-log">
+            <div className="profile-section">
+              <motion.div
+                className="profile-image-container"
+                onClick={navigateToProfile}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <img
+                  src={profilePicture}
+                  alt="Profile"
+                  className="profile-image"
+                  onError={(e) => {
+                    e.target.onerror = null;
+                    e.target.src = defaultProfile;
+                  }}
+                />
+              </motion.div>
+              <div className="profile-info">
+                {user && (
+                  <>
+                    <h2 className="profile-name">{user.name}</h2>
+                    <p className="profile-id">ID: {user.studentId}</p>
+                  </>
+                )}
+              </div>
+            </div>
+            <motion.button
+              onClick={openLogoutConfirm}
+              className="logout-btn"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              <img
-                src={profilePicture}
-                alt="Profile"
-                className="profile-image"
-                onError={(e) => {
-                  e.target.onerror = null;
-                  e.target.src = defaultProfile;
-                }}
-              />
-            </motion.div>
-            <div className="profile-info">
-              {user && (
-                <>
-                  <h2 className="profile-name">{user.name}</h2>
-                  <p className="profile-id">ID: {user.studentId}</p>
-                </>
-              )}
-            </div>
+              <span className="logout-icon">→</span> Logout
+            </motion.button>
           </div>
-          <motion.button
-            onClick={openLogoutConfirm}
-            className="logout-btn"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            <span className="logout-icon">→</span> Logout
-          </motion.button>
         </div>
       </div>
 
@@ -229,12 +230,12 @@ const Dashboard = () => {
                     {gpa >= 3.7
                       ? "1st Class - Excellent work! Keep it up!"
                       : gpa >= 3.3
-                      ? "2nd Upper Class - Good performance!"
-                      : gpa >= 2.7
-                      ? "2nd Lower Class - You're doing well."
-                      : gpa >= 2.0
-                      ? "General - Let's work on improving this together."
-                      : "Below General - More effort needed."}
+                        ? "2nd Upper Class - Good performance!"
+                        : gpa >= 2.7
+                          ? "2nd Lower Class - You're doing well."
+                          : gpa >= 2.0
+                            ? "General - Let's work on improving this together."
+                            : "Below General - More effort needed."}
                   </div>
                 )}
               </div>

@@ -1,23 +1,35 @@
+/* Base styles with mobile-first approach */
 .course-container {
-  max-width: 80%;
+  width: 100%;
+  max-width: 100%;
   margin: 0 auto;
-  padding: 20px;
+  padding: 15px;
   font-family: Arial, sans-serif;
+  box-sizing: border-box;
 }
 
+/* Responsive tabs */
 .level-tabs, .course-type-tabs {
   display: flex;
-  margin-bottom: 20px;
-  gap: 10px;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 15px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 5px;
 }
 
 .level-tab, .type-tab {
-  padding: 10px 20px;
+  padding: 8px 12px;
+  min-width: 60px;
   border: none;
   border-radius: 5px;
   cursor: pointer;
   background-color: #e0e0e0;
-  transition: background-color 0.3s;
+  transition: all 0.3s;
+  font-size: 14px;
+  text-align: center;
+  flex: 1 0 auto;
 }
 
 .level-tab.active, .type-tab.active {
@@ -25,15 +37,20 @@
   color: white;
 }
 
-.course-form {
+/* Form sections */
+.course-form, .import-section {
   background-color: #f9f9f9;
-  padding: 10px 20px;
+  padding: 15px;
   border-radius: 5px;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .course-form h3 {
   color: #e53e3e;
+  font-size: 16px;
+  margin-top: 0;
 }
 
 .course-form h3 span {
@@ -41,31 +58,44 @@
   color: #e53e3e;
 }
 
+/* Form elements */
 .form-group {
-  margin-bottom: 15px;
+  margin-bottom: 12px;
+  width: 100%;
 }
 
 .form-group label {
   display: block;
   font-weight: bold;
   margin-bottom: 5px;
+  font-size: 14px;
 }
 
-.form-group input, .form-group select {
+.form-group input, 
+.form-group select {
   width: 100%;
   padding: 8px;
   border: 1px solid #ddd;
   border-radius: 4px;
+  box-sizing: border-box;
+  font-size: 14px;
 }
 
+/* Buttons */
 .add-btn, .calculate-btn, .import-btn {
   color: white;
   padding: 10px 15px;
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  font-size: 16px;
+  font-size: 14px;
   margin-top: 10px;
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
 }
 
 .add-btn {
@@ -76,29 +106,33 @@
   background-color: #45a049;
 }
 
+/* Courses list */
 .courses-list {
-  margin-bottom: 30px;
+  margin-bottom: 20px;
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .courses-list table {
   width: 100%;
   border-collapse: collapse;
+  min-width: 600px; /* Allows horizontal scrolling on small devices */
 }
 
-.courses-list th, .courses-list td {
+.courses-list th, 
+.courses-list td {
   border: 1px solid #ddd;
   padding: 8px;
   text-align: left;
+  font-size: 14px;
 }
 
 .courses-list th {
   background-color: #f2f2f2;
 }
 
-.courses-list tr:nth-child(even) {
-  background-color: #f9f9f9;
-}
-
+/* Back button */
 .back-btn {
   color: rgb(0, 0, 0);
   background-color: #fff;
@@ -106,7 +140,8 @@
   border-radius: 50%;
   cursor: pointer;
   font-size: 25px;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
+  padding: 5px;
 }
 
 .back-btn:hover {
@@ -114,24 +149,20 @@
   color: #e53e3e;
 }
 
-/* Import section styles */
+/* Import section */
 .import-section {
   background-color: #f0f8ff;
-  padding: 20px;
-  border-radius: 5px;
-  margin: 20px 0;
+  margin: 15px 0;
 }
 
 .import-section h3 {
   color: #1e90ff;
-  margin-bottom: 15px;
+  margin-bottom: 10px;
+  font-size: 16px;
 }
 
 .import-btn {
   background-color: #1e90ff;
-  display: flex;
-  align-items: center;
-  gap: 8px;
 }
 
 .import-btn:hover {
@@ -147,5 +178,32 @@
   display: block;
   margin-top: 5px;
   color: #666;
-  font-size: 0.8em;
+  font-size: 12px;
+}
+
+/* Media queries for larger screens */
+@media (min-width: 768px) {
+  .course-container {
+    max-width: 80%;
+    padding: 20px;
+  }
+  
+  .level-tabs, .course-type-tabs {
+    flex-wrap: nowrap;
+    gap: 10px;
+  }
+  
+  .level-tab, .type-tab {
+    padding: 10px 20px;
+    min-width: auto;
+  }
+  
+  .add-btn, .import-btn {
+    width: auto;
+    display: inline-flex;
+  }
+  
+  .courses-list table {
+    min-width: 100%;
+  }
 }
