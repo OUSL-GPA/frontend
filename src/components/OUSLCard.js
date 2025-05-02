@@ -41,6 +41,7 @@ function OUSLCard() {
       overflow: 'hidden',
       padding: '20px',
       boxShadow: '0 4px 8px rgba(0,0,0,0.2)',
+      backgroundColor: 'white',
     },
     imageContainer: {
       width: '100%',

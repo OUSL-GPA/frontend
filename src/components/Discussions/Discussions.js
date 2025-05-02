@@ -22,7 +22,6 @@ const Discussions = () => {
   const [filter, setFilter] = useState({
     course: "",
     search: "",
-    sort: "newest",
   });
   const [expandedDays, setExpandedDays] = useState({});
 
@@ -33,7 +32,6 @@ const Discussions = () => {
         const params = new URLSearchParams();
         if (filter.course) params.append("course", filter.course);
         if (filter.search) params.append("search", filter.search);
-        if (filter.sort) params.append("sort", filter.sort);
 
         const response = await axios.get(`/api/discussions?${params.toString()}`);
         setDiscussions(response.data);
@@ -65,7 +63,6 @@ const Discussions = () => {
         }
       );
 
-      // Add the new discussion to the beginning of the list
       setDiscussions([response.data, ...discussions]);
       setNewDiscussion({ title: "", content: "", course: "" });
       setShowForm(false);
@@ -97,9 +94,9 @@ const Discussions = () => {
         discussions.map((discussion) =>
           discussion._id === discussionId
             ? {
-              ...discussion,
-              replies: [...discussion.replies, response.data],
-            }
+                ...discussion,
+                replies: [...discussion.replies, response.data],
+              }
             : discussion
         )
       );
@@ -129,7 +126,14 @@ const Discussions = () => {
 
   const getLocalDate = (dateString) => {
     const date = new Date(dateString);
-    return new Date(date.getTime() - date.getTimezoneOffset() * 60000);
+    return new Date(
+      date.getUTCFullYear(),
+      date.getUTCMonth(),
+      date.getUTCDate(),
+      date.getUTCHours(),
+      date.getUTCMinutes(),
+      date.getUTCSeconds()
+    );
   };
 
   const formatDayHeader = (dateString) => {
@@ -139,14 +143,14 @@ const Discussions = () => {
     const date = getLocalDate(dateString);
     date.setHours(0, 0, 0, 0);
 
-    if (date.getTime() === today.getTime()) {
-      return "Today";
-    }
-
     const yesterday = new Date(today);
     yesterday.setDate(yesterday.getDate() - 1);
-    if (date.getTime() === yesterday.getTime()) {
+
+    if (date.getTime() === today.getTime()) {
       return "Yesterday";
+    }
+    if (date.getTime() === yesterday.getTime()) {
+      return "Today";
     }
 
     const options = { weekday: "long", year: "numeric", month: "long", day: "numeric" };
@@ -154,27 +158,22 @@ const Discussions = () => {
   };
 
   const groupDiscussionsByDay = () => {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-
     const grouped = {};
-
+    
     discussions.forEach((discussion) => {
       const localDate = getLocalDate(discussion.createdAt);
       localDate.setHours(0, 0, 0, 0);
-
-      const dateKey = localDate.toISOString().split("T")[0];
-
+      
+      const dateKey = localDate.toISOString().split('T')[0];
+      
       if (!grouped[dateKey]) {
         grouped[dateKey] = [];
       }
-
       grouped[dateKey].push(discussion);
     });
 
-    // Sort days in descending order
     const sortedDays = Object.keys(grouped).sort((a, b) => new Date(b) - new Date(a));
-
+    
     return { grouped, sortedDays };
   };
 
@@ -188,10 +187,10 @@ const Discussions = () => {
       exit={{ opacity: 0 }}
       transition={{ duration: 0.3 }}
     >
+      <button className="back-btn" onClick={() => navigate("/dashboard")}>
+        <IoReturnUpBack />
+      </button>
       <div className="discussions-header">
-        <button className="back-btn" onClick={() => navigate("/dashboard")}>
-          <IoReturnUpBack />
-        </button>
         <h1>Student Discussions</h1>
         <motion.button
           className="new-discussion-btn"
@@ -248,7 +247,7 @@ const Discussions = () => {
               </div>
               <div className="form-row">
                 <div className="form-group">
-                  <label htmlFor="course">Course</label>
+                  <label htmlFor="course">Purpose</label>
                   <input
                     type="text"
                     id="course"
@@ -278,36 +277,14 @@ const Discussions = () => {
 
       <div className="discussions-filter">
         <div className="filter-group">
-          <label htmlFor="course-filter">Filter by Course:</label>
-          <input
-            type="text"
-            id="course-filter"
-            value={filter.course}
-            onChange={(e) => setFilter({ ...filter, course: e.target.value })}
-            placeholder="e.g., CS101"
-          />
-        </div>
-        <div className="filter-group">
           <label htmlFor="search-filter">Search:</label>
           <input
             type="text"
             id="search-filter"
             value={filter.search}
             onChange={(e) => setFilter({ ...filter, search: e.target.value })}
-            placeholder="Search discussions..."
+            placeholder="Enter keywords..."
           />
-        </div>
-        <div className="filter-group">
-          <label htmlFor="sort-filter">Sort by:</label>
-          <select
-            id="sort-filter"
-            value={filter.sort}
-            onChange={(e) => setFilter({ ...filter, sort: e.target.value })}
-          >
-            <option value="newest">Newest First</option>
-            <option value="oldest">Oldest First</option>
-            <option value="popular">Most Popular</option>
-          </select>
         </div>
       </div>
 
@@ -353,11 +330,12 @@ const Discussions = () => {
                       {dayDiscussions.map((discussion) => (
                         <motion.div
                           key={discussion._id}
-                          className={`discussion-card ${selectedDiscussion &&
-                              selectedDiscussion._id === discussion._id
+                          className={`discussion-card ${
+                            selectedDiscussion &&
+                            selectedDiscussion._id === discussion._id
                               ? "selected"
                               : ""
-                            }`}
+                          }`}
                           initial={{ opacity: 0, y: 20 }}
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ duration: 0.3 }}
@@ -394,16 +372,16 @@ const Discussions = () => {
                               </div>
                             </div>
                             <div className="course-and-reply">
-                            <div className="discussion-meta">
-                              <span className="discussion-course1">
-                                <b>Purpose- </b>{discussion.course}
-                              </span>
-                            </div>
-                            <div className="discussion-meta">
-                              <span className="discussion-course2">
-                                <b>Send a reply</b>
-                              </span>
-                            </div>
+                              <div className="discussion-meta">
+                                <span className="discussion-course1">
+                                  <b>Purpose- </b>{discussion.course}
+                                </span>
+                              </div>
+                              <div className="discussion-meta">
+                                <span className="discussion-course2">
+                                  <b>Send a reply</b>
+                                </span>
+                              </div>
                             </div>
                           </div>
                           <div
