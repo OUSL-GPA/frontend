@@ -9,7 +9,6 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import AddCourse from "./components/AddCourse/AddCourse";
 import MyGrades from "./components/MyGrades/MyGrades";
-import Footer from "./components/Footer/Footer";
 import Discussions from "./components/Discussions/Discussions";
 import Requirement from "./components/Requirement/Requirement";
 import VerifyEmail from './components/VerifyEmail/VerifyEmail';
@@ -39,7 +38,6 @@ function App() {
       </Routes>
       
       <ToastContainer />
-      <Footer />
     </div>
   );
 }

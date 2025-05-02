@@ -26,6 +26,11 @@
   gap: 1rem;
 }
 
+.profile-log{
+  display: flex;
+  align-items: center;
+}
+
 .profile-image-container {
   width: 5rem;
   height: 5rem;
@@ -90,6 +95,7 @@
   background: linear-gradient(135deg, #ff416c, #ff4b2b);
   color: white;
   border: none;
+  height: 3.5rem;
   padding: 0.6rem 1.2rem;
   border-radius: 30px;
   cursor: pointer;
@@ -99,7 +105,7 @@
   align-items: center;
   gap: 0.5rem;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  white-space: nowrap;
+
 }
 
 .logout-btn:hover {
@@ -490,11 +496,18 @@
     align-items: stretch;
     gap: 1rem;
   }
+
+  .profile-log{
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: start;
+  }
   
   .header-right {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 1rem;
+    flex-direction: row-reverse;
+    align-items: start;
+    gap: 0rem;
   }
   
   .logout-btn {
@@ -517,7 +530,7 @@
 
 @media (max-width: 480px) {
   .dashboard-container {
-    padding: 0.8rem;
+    padding: 1rem;
   }
   
   .profile-section {
@@ -531,6 +544,16 @@
   
   .gpa-number {
     font-size: 3rem;
+  }
+  
+  .gpa-header h3 {
+    font-size: 1.2rem;
+    color: #2c3e50;
+    margin: 0;
+  }
+
+  .gpa-message{
+    font-size: 0.9rem;
   }
   
   .logout-modal {
