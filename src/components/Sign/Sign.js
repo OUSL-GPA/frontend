@@ -128,7 +128,7 @@ const Sign = () => {
   return (
     <div className="sign-container">
       <ToastContainer />
-      <OUSLCard />
+      <OUSLCard className="signin-card" />
       
       <motion.div 
         className="sign-form"
