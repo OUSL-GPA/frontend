@@ -152,6 +152,23 @@ const MyGrades = () => {
   if (error) return <div className="error">Error: {error}</div>;
 
   const safeCourses = Array.isArray(courses) ? courses : [];
+  
+  // Group courses by level and type
+  const groupedCourses = [3, 4, 5, 6].reduce((acc, level) => {
+    const levelCourses = safeCourses.filter(
+      course => course.level === level && (showPending || course.grade !== 'Pending')
+    );
+    
+    if (levelCourses.length === 0) return acc;
+    
+    const levelData = {
+      level,
+      compulsory: levelCourses.filter(course => course.courseType === 'compulsory'),
+      elective: levelCourses.filter(course => course.courseType === 'elective')
+    };
+    
+    return [...acc, levelData];
+  }, []);
 
   return (
     <div className="my-courses-container">
@@ -187,152 +204,84 @@ const MyGrades = () => {
       {safeCourses.length === 0 ? (
         <p className="no-courses-message">No courses found. Add some courses to see them here.</p>
       ) : (
-        <div className="courses-by-level">
-          {[3, 4, 5, 6].map((level) => {
-            const levelCourses = safeCourses.filter(
-              (course) => course.level === level && 
-                         (showPending || course.grade !== 'Pending')
-            );
-
-            return (
-              levelCourses.length > 0 && (
-                <div key={level} className="level-section">
-                  <h2>Level {level}</h2>
-
-                  <div className="course-type-section">
-                    {["compulsory", "elective"].map((type) => {
-                      const typeCourses = levelCourses.filter(
-                        (course) => course.courseType === type
-                      );
-
-                      return (
-                        typeCourses.length > 0 && (
-                          <div key={type} className="course-type-group">
-                            <h3>
-                              {type.charAt(0).toUpperCase() + type.slice(1)} Courses
-                              {type === 'compulsory' && level >= 4 && 
-                               <span className="gpa-note"> (Included in GPA)</span>}
-                            </h3>
-                            <div className="table-responsive">
-                              <table>
-                                <thead>
-                                  <tr>
-                                    <th>Course Code</th>
-                                    <th>Course Name</th>
-                                    <th>Credits</th>
-                                    <th>Status</th>
-                                    <th>Grade</th>
-                                    <th>Attempts</th>
-                                    <th>Eligibility Left</th>
-                                    <th className="action-column">Actions</th>
-                                  </tr>
-                                </thead>
-                                <tbody>
-                                  {typeCourses.map((course) => (
-                                    <tr 
-                                      key={course._id} 
-                                      className={`course-row ${course.grade === 'Pending' ? 'pending-course' : ''}`}
-                                    >
-                                      <td className="course-code">{course.courseCode}</td>
-                                      <td className="course-name">{course.courseName}</td>
-                                      <td className="course-credits">{course.credits || "N/A"}</td>
-                                      <td className="course-status">
-                                        <span 
-                                          className="status-badge"
-                                          style={{ backgroundColor: statusColors[course.progressStatus] || '#9E9E9E' }}
-                                        >
-                                          {course.progressStatus || "N/A"}
-                                        </span>
-                                      </td>
-                                      <td className="course-grade">
-                                        {editGrade === course._id ? (
-                                          <div className="grade-edit-container">
-                                            <select
-                                              value={newGrade}
-                                              onChange={(e) => setNewGrade(e.target.value)}
-                                              className="grade-select"
-                                            >
-                                              <option value="">Select Grade</option>
-                                              {gradeOptions.map((grade) => (
-                                                <option key={grade} value={grade}>
-                                                  {grade}
-                                                </option>
-                                              ))}
-                                            </select>
-                                            <div className="grade-edit-buttons">
-                                              <button
-                                                className="action-edit-save-btn"
-                                                onClick={() => handleUpdateGrade(course._id)}
-                                                disabled={!newGrade}
-                                              >
-                                                Save
-                                              </button>
-                                              <button
-                                                className="action-edit-cancel-btn"
-                                                onClick={() => setEditGrade(null)}
-                                              >
-                                                Cancel
-                                              </button>
-                                            </div>
-                                          </div>
-                                        ) : (
-                                          <span className={`grade-display ${course.grade === 'Pending' ? 'pending-grade' : ''}`}>
-                                            {course.grade || "Pending"}
-                                          </span>
-                                        )}
-                                      </td>
-                                      <td className="course-attempts">{course.attempts || "0"}</td>
-                                      <td className="course-eligibility">{course.eligibilityLeft || "0"}</td>
-                                      <td className="course-actions">
-                                        {editGrade === course._id ? null : (
-                                          <>
-                                            <button
-                                              className="action-btn-edit"
-                                              onClick={() => {
-                                                setEditGrade(course._id);
-                                                setNewGrade(course.grade || "");
-                                              }}
-                                            >
-                                              Edit
-                                            </button>
-                                            <button
-                                              onClick={() => openDeleteModal(course._id)}
-                                              className="action-btn-delete"
-                                            >
-                                              Delete
-                                            </button>
-                                            {course.courseType === "compulsory" ? (
-                                              <button
-                                                className="action-btn-set-elective"
-                                                onClick={() => handleUpdateCourseType(course._id, "elective")}
-                                              >
-                                                Set Elective
-                                              </button>
-                                            ) : (
-                                              <button
-                                                className="action-btn-set-compulsory"
-                                                onClick={() => handleUpdateCourseType(course._id, "compulsory")}
-                                              >
-                                                Set Compulsory
-                                              </button>
-                                            )}
-                                          </>
-                                        )}
-                                      </td>
-                                    </tr>
-                                  ))}
-                                </tbody>
-                              </table>
-                            </div>
-                          </div>
-                        )
-                      );
-                    })}
-                  </div>
-                </div>
-              )
-            );
-          })}
+        <div className="courses-table-container">
+          <table className="combined-courses-table">
+            <thead>
+              <tr>
+                <th colSpan="8" className="table-header">My Academic Progress</th>
+              </tr>
+              <tr>
+                <th>Course Code</th>
+                <th>Course Name</th>
+                <th>Credits</th>
+                <th>Status</th>
+                <th>Grade</th>
+                <th>Attempts</th>
+                <th>Eligibility Left</th>
+                <th className="action-column">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {groupedCourses.map((levelData) => (
+                <React.Fragment key={`level-${levelData.level}`}>
+                  {/* Level Header Row */}
+                  <tr className="level-header-row">
+                    <td colSpan="8">Level {levelData.level}</td>
+                  </tr>
+                  
+                  {/* Compulsory Courses */}
+                  {levelData.compulsory.length > 0 && (
+                    <React.Fragment>
+                      <tr className="type-header-row">
+                        <td colSpan="8">
+                          Compulsory Courses {levelData.level >= 4 && <span className="gpa-note">(Included in GPA)</span>}
+                        </td>
+                      </tr>
+                      {levelData.compulsory.map((course) => (
+                        <CourseRow 
+                          key={course._id}
+                          course={course}
+                          editGrade={editGrade}
+                          newGrade={newGrade}
+                          setNewGrade={setNewGrade}
+                          setEditGrade={setEditGrade}
+                          handleUpdateGrade={handleUpdateGrade}
+                          openDeleteModal={openDeleteModal}
+                          handleUpdateCourseType={handleUpdateCourseType}
+                          statusColors={statusColors}
+                          gradeOptions={gradeOptions}
+                        />
+                      ))}
+                    </React.Fragment>
+                  )}
+                  
+                  {/* Elective Courses */}
+                  {levelData.elective.length > 0 && (
+                    <React.Fragment>
+                      <tr className="type-header-row">
+                        <td colSpan="8">Elective Courses</td>
+                      </tr>
+                      {levelData.elective.map((course) => (
+                        <CourseRow 
+                          key={course._id}
+                          course={course}
+                          editGrade={editGrade}
+                          newGrade={newGrade}
+                          setNewGrade={setNewGrade}
+                          setEditGrade={setEditGrade}
+                          handleUpdateGrade={handleUpdateGrade}
+                          openDeleteModal={openDeleteModal}
+                          handleUpdateCourseType={handleUpdateCourseType}
+                          statusColors={statusColors}
+                          gradeOptions={gradeOptions}
+                        />
+                      ))}
+                    </React.Fragment>
+                  )}
+                </React.Fragment>
+              ))}
+            </tbody>
+          </table>
         </div>
       )}
 
@@ -356,6 +305,113 @@ const MyGrades = () => {
         </div>
       )}
     </div>
+  );
+};
+
+const CourseRow = ({
+  course,
+  editGrade,
+  newGrade,
+  setNewGrade,
+  setEditGrade,
+  handleUpdateGrade,
+  openDeleteModal,
+  handleUpdateCourseType,
+  statusColors,
+  gradeOptions
+}) => {
+  return (
+    <tr 
+      key={course._id} 
+      className={`course-row ${course.grade === 'Pending' ? 'pending-course' : ''}`}
+    >
+      <td className="course-code">{course.courseCode}</td>
+      <td className="course-name">{course.courseName}</td>
+      <td className="course-credits">{course.credits || "N/A"}</td>
+      <td className="course-status">
+        <span 
+          className="status-badge"
+          style={{ backgroundColor: statusColors[course.progressStatus] || '#9E9E9E' }}
+        >
+          {course.progressStatus || "N/A"}
+        </span>
+      </td>
+      <td className="course-grade">
+        {editGrade === course._id ? (
+          <div className="grade-edit-container">
+            <select
+              value={newGrade}
+              onChange={(e) => setNewGrade(e.target.value)}
+              className="grade-select"
+            >
+              <option value="">Select Grade</option>
+              {gradeOptions.map((grade) => (
+                <option key={grade} value={grade}>
+                  {grade}
+                </option>
+              ))}
+            </select>
+            <div className="grade-edit-buttons">
+              <button
+                className="action-edit-save-btn"
+                onClick={() => handleUpdateGrade(course._id)}
+                disabled={!newGrade}
+              >
+                Save
+              </button>
+              <button
+                className="action-edit-cancel-btn"
+                onClick={() => setEditGrade(null)}
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        ) : (
+          <span className={`grade-display ${course.grade === 'Pending' ? 'pending-grade' : ''}`}>
+            {course.grade || "Pending"}
+          </span>
+        )}
+      </td>
+      <td className="course-attempts">{course.attempts || "0"}</td>
+      <td className="course-eligibility">{course.eligibilityLeft || "0"}</td>
+      <td className="course-actions">
+        {editGrade === course._id ? null : (
+          <>
+            <button
+              className="action-btn-edit"
+              onClick={() => {
+                setEditGrade(course._id);
+                setNewGrade(course.grade || "");
+              }}
+            >
+              Edit
+            </button>
+            <button
+              onClick={() => openDeleteModal(course._id)}
+              className="action-btn-delete"
+            >
+              Delete
+            </button>
+            {course.courseType === "compulsory" ? (
+              <button
+                className="action-btn-set-elective"
+                onClick={() => handleUpdateCourseType(course._id, "elective")}
+              >
+                Set Elective
+              </button>
+            ) : (
+              <button
+                className="action-btn-set-compulsory"
+                onClick={() => handleUpdateCourseType(course._id, "compulsory")}
+              >
+                Set Compulsory
+              </button>
+            )}
+          </>
+        )}
+      </td>
+    </tr>
   );
 };
 

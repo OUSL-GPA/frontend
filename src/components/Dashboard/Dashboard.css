@@ -475,6 +475,23 @@
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
+.help-button{
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  margin: 2rem;
+  padding: 0.6rem;
+  font-size: x-large;
+  border: 1px solid white;
+  border-radius: 50%;
+  box-shadow: 3px 4px 10px rgba(0, 0, 0, 0.5);
+}
+
+.help-button:hover{
+  transform: translateY(-2px);
+  cursor: pointer;
+}
+
 /* Responsive Design */
 @media (max-width: 1024px) {
   .user-info {
