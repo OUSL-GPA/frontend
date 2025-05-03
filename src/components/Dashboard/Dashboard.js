@@ -8,6 +8,7 @@ import OUSLCard from "../OUSLCard";
 import defaultProfile from "../../assets/default-Profile.png";
 import { AuthContext } from "../../context/AuthContext";
 import { IoNotifications } from "react-icons/io5";
+import { FaQuestion } from "react-icons/fa";
 
 
 
@@ -273,7 +274,7 @@ const Dashboard = () => {
             onClick={() => navigate(`/my-courses/${userId}/eligibility`)}
           >
             <div className="card-icon">🧮</div>
-            <h3>Eligibility to Degree</h3>
+            <h3>Degree Award</h3>
             <p>Courses needed to get eligible for certificate</p>
           </motion.div>
 
@@ -291,6 +292,13 @@ const Dashboard = () => {
           </motion.div>
         </div>
       </div>
+      <a
+        href="https://wa.link/96p9lr"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <FaQuestion className="help-button"/>
+      </a>
     </motion.div>
   );
 };
